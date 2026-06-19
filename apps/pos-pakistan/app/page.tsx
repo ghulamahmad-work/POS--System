@@ -58,7 +58,7 @@ export default function Home() {
 
       {/* Navigation Cards */}
       <section className="mx-auto max-w-5xl px-6 py-10">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5.5 sm:grid-cols-2">
           {modules.map((mod) => (
             <Link
               key={mod.name}
