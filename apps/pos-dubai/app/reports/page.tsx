@@ -1,10 +1,11 @@
-import { dubaiDb } from "@repo/database/dubai";
+import { createDubaiDb } from "@repo/database/dubai";
 import { ReportsDashboard } from "@repo/ui/ReportsDashboard";
 
 export const dynamic = "force-dynamic";
 
 export default async function ReportsPage() {
   const now = new Date();
+  const dubaiDb = createDubaiDb();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const sales = await dubaiDb.sale.findMany({

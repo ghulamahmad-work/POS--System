@@ -1,9 +1,10 @@
 "use server";
 
-import { dubaiDb } from "@repo/database/dubai";
+import { createDubaiDb } from "@repo/database/dubai";
 import { createPurchasesService } from "@repo/database/purchases";
 import { createPurchasesActions } from "@repo/pos-core/purchases";
 
+const dubaiDb = createDubaiDb();
 const service = createPurchasesService(dubaiDb);
 const actions = createPurchasesActions(service);
 
