@@ -1,7 +1,8 @@
 {
-  "name": "Turborepo",
+"name": "Turborepo",
   "private": true,
   "scripts": {
+    "generate": "npm --prefix packages/database run db:generate:dubai && npm --prefix packages/database run db:generate:pakistan",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

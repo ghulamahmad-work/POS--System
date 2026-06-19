@@ -1,9 +1,10 @@
 "use server";
 
-import { pakistanDb } from "@repo/database/pakistan";
+import { createPakistanDb } from "@repo/database/pakistan";
 import { createPurchasesService } from "@repo/database/purchases";
 import { createPurchasesActions } from "@repo/pos-core/purchases";
 
+const pakistanDb = createPakistanDb();
 const service = createPurchasesService(pakistanDb);
 const actions = createPurchasesActions(service);
 

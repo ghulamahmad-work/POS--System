@@ -1,16 +1,10 @@
-import { PrismaClient as PakistanPrismaClient } from "./generated/pakistan-client";
+import { PrismaClient } from "@prisma/client";
 
-let pakistanDb: PakistanPrismaClient;
+let pakistanDb: PrismaClient;
 
 export function createPakistanDb() {
   if (!pakistanDb) {
-    pakistanDb = new PakistanPrismaClient({
-      datasources: {
-        db: {
-          url: process.env.PAKISTAN_DATABASE_URL
-        }
-      }
-    });
+    pakistanDb = new PrismaClient();
   }
 
   return pakistanDb;
