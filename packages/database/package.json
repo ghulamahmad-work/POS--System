@@ -13,13 +13,11 @@
     "./purchases": "./src/purchases.ts"
   },
   "scripts": {
+    "postinstall": "prisma generate --schema=./prisma-dubai/schema.prisma",
     "db:generate:pakistan": "prisma generate --schema=./prisma-pakistan/schema.prisma",
     "db:generate:dubai": "prisma generate --schema=./prisma-dubai/schema.prisma",
-
     "db:migrate:pakistan": "prisma migrate dev --schema=./prisma-pakistan/schema.prisma",
-    "db:migrate:dubai": "prisma migrate dev --schema=./prisma-dubai/schema.prisma",
-
-    "postinstall": "npm run db:generate:pakistan && npm run db:generate:dubai"
+    "db:migrate:dubai": "prisma migrate dev --schema=./prisma-dubai/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0"
