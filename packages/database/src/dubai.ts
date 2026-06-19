@@ -1,13 +1,13 @@
-import { PrismaClient as DubaiPrismaClient } from "./generated/dubai-client";
+import { PrismaClient } from "@prisma/client";
 
-let dubaiDb: DubaiPrismaClient;
+let dubaiDb: PrismaClient;
 
 export function createDubaiDb() {
   if (!dubaiDb) {
-    dubaiDb = new DubaiPrismaClient({
+    dubaiDb = new PrismaClient({
       datasources: {
         db: {
-          url: process.env.DUBAI_DATABASE_URL
+          url: process.env.DUBAI_DATABASE_URL!
         }
       }
     });

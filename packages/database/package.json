@@ -13,7 +13,7 @@
     "./purchases": "./src/purchases.ts"
   },
   "scripts": {
-    "postinstall": "prisma generate --schema=./prisma-dubai/schema.prisma",
+    "postinstall": "prisma generate",
     "db:generate:pakistan": "prisma generate --schema=./prisma-pakistan/schema.prisma",
     "db:generate:dubai": "prisma generate --schema=./prisma-dubai/schema.prisma",
     "db:migrate:pakistan": "prisma migrate dev --schema=./prisma-pakistan/schema.prisma",
