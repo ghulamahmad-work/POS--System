@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@source "../../../packages/ui/src/**/*.{ts,tsx}";
+
+:root {
+  --color-brand: #00C853;
+  --color-brand-text: #ffffff;
+}
+
+@theme {
+  --color-brand: var(--color-brand);
+  --color-brandText: var(--color-brand-text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

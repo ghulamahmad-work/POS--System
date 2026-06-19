@@ -1,0 +1,13 @@
+{
+  "name": "@repo/pos-core",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./products": "./src/products.ts",
+    "./sales": "./src/sales.ts",
+    "./purchases": "./src/purchases.ts"
+  },
+  "dependencies": {
+    "next": "latest"
+  }
+}
