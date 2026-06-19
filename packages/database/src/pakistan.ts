@@ -1,23 +1,17 @@
 import { PrismaClient as PakistanPrismaClient } from "./generated/pakistan-client";
-import { getAbsoluteDatabaseUrl } from "./db-utils";
 
-const globalForPrisma = globalThis as unknown as {
-  pakistanPrisma: PakistanPrismaClient | undefined;
-};
+let pakistanDb: PakistanPrismaClient;
 
-export const pakistanDb =
-  globalForPrisma.pakistanPrisma ??
-  new PakistanPrismaClient({
-    datasources: {
-      db: {
-        url: getAbsoluteDatabaseUrl(
-          "PAKISTAN_DATABASE_URL",
-          "../../packages/database/prisma-pakistan/pakistan.db"
-        ),
-      },
-    },
-  });
+export function createPakistanDb() {
+  if (!pakistanDb) {
+    pakistanDb = new PakistanPrismaClient({
+      datasources: {
+        db: {
+          url: process.env.PAKISTAN_DATABASE_URL
+        }
+      }
+    });
+  }
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.pakistanPrisma = pakistanDb;
-}
+  return pakistanDb;
+}
