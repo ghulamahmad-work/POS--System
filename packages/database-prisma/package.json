@@ -1,0 +1,23 @@
+{
+  "name": "@repo/database-prisma",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./pakistan": "./src/pakistan/index.ts",
+    "./dubai": "./src/dubai/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0",
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "db:generate": "npm run db:generate:pakistan && npm run db:generate:dubai",
+    "db:generate:pakistan": "prisma generate --schema prisma/pakistan/schema.prisma",
+    "db:generate:dubai": "prisma generate --schema prisma/dubai/schema.prisma",
+    "db:migrate:pakistan": "prisma migrate dev --schema prisma/pakistan/schema.prisma",
+    "db:migrate:dubai": "prisma migrate deploy --schema prisma/dubai/schema.prisma"
+  }
+}

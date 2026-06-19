@@ -1,12 +1,9 @@
 "use server";
 
-import { createDubaiDb } from "@repo/database/dubai";
-import { createPurchasesService } from "@repo/database/purchases";
+import { createDubaiPurchasesService } from "@repo/database-prisma/dubai";
 import { createPurchasesActions } from "@repo/pos-core/purchases";
 
-const dubaiDb = createDubaiDb();
-const service = createPurchasesService(dubaiDb);
-const actions = createPurchasesActions(service);
+const actions = createPurchasesActions(createDubaiPurchasesService());
 
 export const getPurchaseOrders = actions.getPurchaseOrders;
 export const createPurchaseOrder = actions.createPurchaseOrder;

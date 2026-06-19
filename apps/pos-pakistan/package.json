@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@repo/pos-core": "*",
-    "@repo/database": "*",
+    "@repo/database-prisma": "*",
     "@repo/ui": "*",
     "@swc/helpers": "^0.5.23",
     "@tailwindcss/postcss": "^4.3.1",

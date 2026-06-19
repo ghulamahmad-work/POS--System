@@ -1,12 +1,9 @@
 "use server";
 
-import { createPakistanDb } from "@repo/database/pakistan";
-import { createProductService } from "@repo/database/products";
+import { createPakistanProductService } from "@repo/database-prisma/pakistan";
 import { createProductActions } from "@repo/pos-core/products";
 
-const pakistanDb = createPakistanDb();
-const productService = createProductService(pakistanDb);
-const actions = createProductActions(productService);
+const actions = createProductActions(createPakistanProductService());
 
 export const getProducts = actions.getProducts;
 export const getProductById = actions.getProductById;

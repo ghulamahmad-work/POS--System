@@ -2,7 +2,7 @@
 "name": "Turborepo",
   "private": true,
   "scripts": {
-    "generate": "npm --prefix packages/database run db:generate:dubai && npm --prefix packages/database run db:generate:pakistan",
+    "generate": "npm --prefix packages/database-prisma run db:generate",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

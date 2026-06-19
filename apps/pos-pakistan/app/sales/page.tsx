@@ -2,6 +2,8 @@ import { getProducts } from "../../actions/product";
 import { checkout } from "../../actions/sales";
 import { SalesClient } from "@repo/ui/SalesClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function SalesPage() {
   const products = await getProducts();
   return (
