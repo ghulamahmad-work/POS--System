@@ -186,20 +186,21 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Code\\Turborepo\\packages\\database-prisma\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\Code\\Turborepo\\packages\\database-prisma\\prisma\\pakistan\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../../apps/pos-pakistan/.env"
   },
-  "relativePath": "../../../prisma",
+  "relativePath": "../../../prisma/pakistan",
   "clientVersion": "5.22.0",
   "engineVersion": "605197351a3c8bdd595af2d2a9bc3025bca48ea2",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "sqlite",
-  "postinstall": true,
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -208,8 +209,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/pakistan-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"PAKISTAN_DATABASE_URL\")\n}\n\nmodel Product {\n  id             String   @id @default(uuid())\n  name           String\n  price          Float\n  stock          Int\n  category       String\n  voltage        String?\n  warrantyMonths Int?\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n}\n\nmodel Sale {\n  id          String     @id @default(uuid())\n  totalAmount Float\n  taxAmount   Float\n  paymentType String\n  createdAt   DateTime   @default(now())\n  items       SaleItem[]\n}\n\nmodel SaleItem {\n  id        String @id @default(uuid())\n  saleId    String\n  sale      Sale   @relation(fields: [saleId], references: [id])\n  productId String\n  quantity  Int\n  unitPrice Float\n}\n\nmodel Vendor {\n  id             String          @id @default(uuid())\n  name           String\n  contactPhone   String?\n  createdAt      DateTime        @default(now())\n  purchaseOrders PurchaseOrder[]\n}\n\nmodel PurchaseOrder {\n  id          String              @id @default(uuid())\n  vendorId    String\n  vendor      Vendor              @relation(fields: [vendorId], references: [id])\n  status      String              @default(\"pending\")\n  totalAmount Float\n  createdAt   DateTime            @default(now())\n  items       PurchaseOrderItem[]\n}\n\nmodel PurchaseOrderItem {\n  id              String        @id @default(uuid())\n  purchaseOrderId String\n  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])\n  productId       String\n  quantity        Int\n  unitCost        Float\n}\n",
-  "inlineSchemaHash": "fee4bd3c73ca5b4d36da17fa80115ea164266885ceb5431e1e9cce39aea4c6f5",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../../src/generated/pakistan-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"PAKISTAN_DATABASE_URL\")\n}\n\nmodel Product {\n  id             String   @id @default(uuid())\n  name           String\n  price          Float\n  stock          Int\n  category       String\n  voltage        String?\n  warrantyMonths Int?\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n}\n\nmodel Sale {\n  id          String     @id @default(uuid())\n  totalAmount Float\n  taxAmount   Float\n  paymentType String\n  createdAt   DateTime   @default(now())\n  items       SaleItem[]\n}\n\nmodel SaleItem {\n  id        String @id @default(uuid())\n  saleId    String\n  sale      Sale   @relation(fields: [saleId], references: [id])\n  productId String\n  quantity  Int\n  unitPrice Float\n}\n\nmodel Vendor {\n  id             String          @id @default(uuid())\n  name           String\n  contactPhone   String?\n  createdAt      DateTime        @default(now())\n  purchaseOrders PurchaseOrder[]\n}\n\nmodel PurchaseOrder {\n  id          String              @id @default(uuid())\n  vendorId    String\n  vendor      Vendor              @relation(fields: [vendorId], references: [id])\n  status      String              @default(\"pending\")\n  totalAmount Float\n  createdAt   DateTime            @default(now())\n  items       PurchaseOrderItem[]\n}\n\nmodel PurchaseOrderItem {\n  id              String        @id @default(uuid())\n  purchaseOrderId String\n  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])\n  productId       String\n  quantity        Int\n  unitCost        Float\n}\n",
+  "inlineSchemaHash": "b6ee59341609832f1ecd5300e6ab4c067d24e4e318c279d630a755ed473f376c",
   "copyEngine": true
 }
 config.dirname = '/'

@@ -1,10 +1,10 @@
 {
   "name": "pos-pakistan",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --port 3001",
+    "prebuild": "npm --prefix ../../packages/database-prisma exec prisma generate -- --schema ../../packages/database-prisma/prisma/pakistan/schema.prisma",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
