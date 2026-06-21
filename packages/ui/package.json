@@ -7,7 +7,19 @@
     "./SalesClient": "./src/SalesClient.tsx",
     "./PurchaseListClient": "./src/PurchaseListClient.tsx",
     "./PurchaseForm": "./src/PurchaseForm.tsx",
-    "./ReportsDashboard": "./src/ReportsDashboard.tsx"
+    "./ReportsDashboard": "./src/ReportsDashboard.tsx",
+    "./AppShell": "./src/AppShell.tsx",
+    "./DashboardComponents": "./src/DashboardComponents.tsx",
+    "./Table": "./src/Table.tsx",
+    "./Badge": "./src/Badge.tsx",
+    "./Toast": "./src/Toast.tsx",
+    "./Button": "./src/Button.tsx",
+    "./ConfirmDialog": "./src/ConfirmDialog.tsx",
+    "./ProductActions": "./src/ProductActions.tsx",
+    "./ProductForm": "./src/ProductForm.tsx",
+    "./Input": "./src/Input.tsx",
+    "./Select": "./src/Select.tsx",
+    "./formatCurrency": "./src/formatCurrency.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

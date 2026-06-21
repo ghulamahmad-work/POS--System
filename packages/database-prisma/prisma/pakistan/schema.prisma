@@ -15,6 +15,10 @@ model Product {
   price          Float
   stock          Int
   category       String
+  sku            String?
+  brand          String?
+  modelNumber    String?
+  serialNumber   String?
   voltage        String?
   warrantyMonths Int?
   createdAt      DateTime @default(now())

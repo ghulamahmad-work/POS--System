@@ -1395,6 +1395,10 @@ export namespace Prisma {
     price: number | null
     stock: number | null
     category: string | null
+    sku: string | null
+    brand: string | null
+    modelNumber: string | null
+    serialNumber: string | null
     voltage: string | null
     warrantyMonths: number | null
     createdAt: Date | null
@@ -1407,6 +1411,10 @@ export namespace Prisma {
     price: number | null
     stock: number | null
     category: string | null
+    sku: string | null
+    brand: string | null
+    modelNumber: string | null
+    serialNumber: string | null
     voltage: string | null
     warrantyMonths: number | null
     createdAt: Date | null
@@ -1419,6 +1427,10 @@ export namespace Prisma {
     price: number
     stock: number
     category: number
+    sku: number
+    brand: number
+    modelNumber: number
+    serialNumber: number
     voltage: number
     warrantyMonths: number
     createdAt: number
@@ -1445,6 +1457,10 @@ export namespace Prisma {
     price?: true
     stock?: true
     category?: true
+    sku?: true
+    brand?: true
+    modelNumber?: true
+    serialNumber?: true
     voltage?: true
     warrantyMonths?: true
     createdAt?: true
@@ -1457,6 +1473,10 @@ export namespace Prisma {
     price?: true
     stock?: true
     category?: true
+    sku?: true
+    brand?: true
+    modelNumber?: true
+    serialNumber?: true
     voltage?: true
     warrantyMonths?: true
     createdAt?: true
@@ -1469,6 +1489,10 @@ export namespace Prisma {
     price?: true
     stock?: true
     category?: true
+    sku?: true
+    brand?: true
+    modelNumber?: true
+    serialNumber?: true
     voltage?: true
     warrantyMonths?: true
     createdAt?: true
@@ -1568,6 +1592,10 @@ export namespace Prisma {
     price: number
     stock: number
     category: string
+    sku: string | null
+    brand: string | null
+    modelNumber: string | null
+    serialNumber: string | null
     voltage: string | null
     warrantyMonths: number | null
     createdAt: Date
@@ -1599,6 +1627,10 @@ export namespace Prisma {
     price?: boolean
     stock?: boolean
     category?: boolean
+    sku?: boolean
+    brand?: boolean
+    modelNumber?: boolean
+    serialNumber?: boolean
     voltage?: boolean
     warrantyMonths?: boolean
     createdAt?: boolean
@@ -1611,6 +1643,10 @@ export namespace Prisma {
     price?: boolean
     stock?: boolean
     category?: boolean
+    sku?: boolean
+    brand?: boolean
+    modelNumber?: boolean
+    serialNumber?: boolean
     voltage?: boolean
     warrantyMonths?: boolean
     createdAt?: boolean
@@ -1623,6 +1659,10 @@ export namespace Prisma {
     price?: boolean
     stock?: boolean
     category?: boolean
+    sku?: boolean
+    brand?: boolean
+    modelNumber?: boolean
+    serialNumber?: boolean
     voltage?: boolean
     warrantyMonths?: boolean
     createdAt?: boolean
@@ -1639,6 +1679,10 @@ export namespace Prisma {
       price: number
       stock: number
       category: string
+      sku: string | null
+      brand: string | null
+      modelNumber: string | null
+      serialNumber: string | null
       voltage: string | null
       warrantyMonths: number | null
       createdAt: Date
@@ -2041,6 +2085,10 @@ export namespace Prisma {
     readonly price: FieldRef<"Product", 'Float'>
     readonly stock: FieldRef<"Product", 'Int'>
     readonly category: FieldRef<"Product", 'String'>
+    readonly sku: FieldRef<"Product", 'String'>
+    readonly brand: FieldRef<"Product", 'String'>
+    readonly modelNumber: FieldRef<"Product", 'String'>
+    readonly serialNumber: FieldRef<"Product", 'String'>
     readonly voltage: FieldRef<"Product", 'String'>
     readonly warrantyMonths: FieldRef<"Product", 'Int'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
@@ -7195,6 +7243,10 @@ export namespace Prisma {
     price: 'price',
     stock: 'stock',
     category: 'category',
+    sku: 'sku',
+    brand: 'brand',
+    modelNumber: 'modelNumber',
+    serialNumber: 'serialNumber',
     voltage: 'voltage',
     warrantyMonths: 'warrantyMonths',
     createdAt: 'createdAt',
@@ -7319,6 +7371,10 @@ export namespace Prisma {
     price?: FloatFilter<"Product"> | number
     stock?: IntFilter<"Product"> | number
     category?: StringFilter<"Product"> | string
+    sku?: StringNullableFilter<"Product"> | string | null
+    brand?: StringNullableFilter<"Product"> | string | null
+    modelNumber?: StringNullableFilter<"Product"> | string | null
+    serialNumber?: StringNullableFilter<"Product"> | string | null
     voltage?: StringNullableFilter<"Product"> | string | null
     warrantyMonths?: IntNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
@@ -7331,6 +7387,10 @@ export namespace Prisma {
     price?: SortOrder
     stock?: SortOrder
     category?: SortOrder
+    sku?: SortOrderInput | SortOrder
+    brand?: SortOrderInput | SortOrder
+    modelNumber?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
     voltage?: SortOrderInput | SortOrder
     warrantyMonths?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -7346,6 +7406,10 @@ export namespace Prisma {
     price?: FloatFilter<"Product"> | number
     stock?: IntFilter<"Product"> | number
     category?: StringFilter<"Product"> | string
+    sku?: StringNullableFilter<"Product"> | string | null
+    brand?: StringNullableFilter<"Product"> | string | null
+    modelNumber?: StringNullableFilter<"Product"> | string | null
+    serialNumber?: StringNullableFilter<"Product"> | string | null
     voltage?: StringNullableFilter<"Product"> | string | null
     warrantyMonths?: IntNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
@@ -7358,6 +7422,10 @@ export namespace Prisma {
     price?: SortOrder
     stock?: SortOrder
     category?: SortOrder
+    sku?: SortOrderInput | SortOrder
+    brand?: SortOrderInput | SortOrder
+    modelNumber?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
     voltage?: SortOrderInput | SortOrder
     warrantyMonths?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -7378,6 +7446,10 @@ export namespace Prisma {
     price?: FloatWithAggregatesFilter<"Product"> | number
     stock?: IntWithAggregatesFilter<"Product"> | number
     category?: StringWithAggregatesFilter<"Product"> | string
+    sku?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    brand?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    modelNumber?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    serialNumber?: StringNullableWithAggregatesFilter<"Product"> | string | null
     voltage?: StringNullableWithAggregatesFilter<"Product"> | string | null
     warrantyMonths?: IntNullableWithAggregatesFilter<"Product"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
@@ -7671,6 +7743,10 @@ export namespace Prisma {
     price: number
     stock: number
     category: string
+    sku?: string | null
+    brand?: string | null
+    modelNumber?: string | null
+    serialNumber?: string | null
     voltage?: string | null
     warrantyMonths?: number | null
     createdAt?: Date | string
@@ -7683,6 +7759,10 @@ export namespace Prisma {
     price: number
     stock: number
     category: string
+    sku?: string | null
+    brand?: string | null
+    modelNumber?: string | null
+    serialNumber?: string | null
     voltage?: string | null
     warrantyMonths?: number | null
     createdAt?: Date | string
@@ -7695,6 +7775,10 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     category?: StringFieldUpdateOperationsInput | string
+    sku?: NullableStringFieldUpdateOperationsInput | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    modelNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
     voltage?: NullableStringFieldUpdateOperationsInput | string | null
     warrantyMonths?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7707,6 +7791,10 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     category?: StringFieldUpdateOperationsInput | string
+    sku?: NullableStringFieldUpdateOperationsInput | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    modelNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
     voltage?: NullableStringFieldUpdateOperationsInput | string | null
     warrantyMonths?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7719,6 +7807,10 @@ export namespace Prisma {
     price: number
     stock: number
     category: string
+    sku?: string | null
+    brand?: string | null
+    modelNumber?: string | null
+    serialNumber?: string | null
     voltage?: string | null
     warrantyMonths?: number | null
     createdAt?: Date | string
@@ -7731,6 +7823,10 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     category?: StringFieldUpdateOperationsInput | string
+    sku?: NullableStringFieldUpdateOperationsInput | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    modelNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
     voltage?: NullableStringFieldUpdateOperationsInput | string | null
     warrantyMonths?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7743,6 +7839,10 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     category?: StringFieldUpdateOperationsInput | string
+    sku?: NullableStringFieldUpdateOperationsInput | string | null
+    brand?: NullableStringFieldUpdateOperationsInput | string | null
+    modelNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
     voltage?: NullableStringFieldUpdateOperationsInput | string | null
     warrantyMonths?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8114,6 +8214,10 @@ export namespace Prisma {
     price?: SortOrder
     stock?: SortOrder
     category?: SortOrder
+    sku?: SortOrder
+    brand?: SortOrder
+    modelNumber?: SortOrder
+    serialNumber?: SortOrder
     voltage?: SortOrder
     warrantyMonths?: SortOrder
     createdAt?: SortOrder
@@ -8132,6 +8236,10 @@ export namespace Prisma {
     price?: SortOrder
     stock?: SortOrder
     category?: SortOrder
+    sku?: SortOrder
+    brand?: SortOrder
+    modelNumber?: SortOrder
+    serialNumber?: SortOrder
     voltage?: SortOrder
     warrantyMonths?: SortOrder
     createdAt?: SortOrder
@@ -8144,6 +8252,10 @@ export namespace Prisma {
     price?: SortOrder
     stock?: SortOrder
     category?: SortOrder
+    sku?: SortOrder
+    brand?: SortOrder
+    modelNumber?: SortOrder
+    serialNumber?: SortOrder
     voltage?: SortOrder
     warrantyMonths?: SortOrder
     createdAt?: SortOrder

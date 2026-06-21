@@ -1,85 +1,235 @@
-import Link from "next/link";
+import { dubaiDb } from "@repo/database-prisma/dubai";
+import { StatCard, SalesChart, TopProductsList, EmptyState } from "@repo/ui/DashboardComponents";
+import { formatCurrency } from "@repo/ui/formatCurrency";
+import { AppFrame } from "./AppFrame";
 
-const modules = [
-  {
-    name: "Products",
-    href: "/products",
-    description: "Manage inventory, add items, and update stock levels",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-      </svg>
-    ),
-  },
-  {
-    name: "Sales",
-    href: "/sales",
-    description: "Record sales transactions and generate invoices",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Purchases",
-    href: "/purchases",
-    description: "Track supplier orders and manage purchase records",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Reports",
-    href: "/reports",
-    description: "View analytics, profit summaries, and business insights",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-      </svg>
-    ),
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+type PageProps = {
+  searchParams: Promise<{ period?: string }>;
+};
+
+function BanknotesIcon() {
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="mx-auto max-w-5xl px-6 py-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dubai Grocery Store
-          </h1>
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="12" x2="12" y1="2" y2="22" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
 
-        </div>
-      </header>
+function ShoppingBagIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" x2="21" y1="6" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
 
-      {/* Navigation Cards */}
-      <section className="mx-auto max-w-5xl px-6 py-10">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {modules.map((mod) => (
-            <Link
-              key={mod.name}
-              href={mod.href}
-              className="group relative flex items-start gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-orange-300 hover:-translate-y-0.5"
-            >
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
-                {mod.icon}
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 group-hover:text-orange-700 transition-colors">
-                  {mod.name}
-                </h2>
-                <p className="mt-1 text-sm text-gray-500">
-                  {mod.description}
-                </p>
-              </div>
-            </Link>
-          ))}
+function AlertTriangleIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" x2="12" y1="9" y2="13" />
+      <line x1="12" x2="12.01" y1="17" y2="17" />
+    </svg>
+  );
+}
+
+function TagIcon() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" x2="7.01" y1="7" y2="7" />
+    </svg>
+  );
+}
+
+export default async function DashboardPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const period = params.period === "month" ? "month" : "week";
+  const days = period === "month" ? 30 : 7;
+
+  // Check if store has any sales at all
+  const totalSalesCount = await dubaiDb.sale.count();
+  if (totalSalesCount === 0) {
+    return (
+      <AppFrame pageTitle="Dashboard">
+        <EmptyState
+          title="No sales recorded yet"
+          description="Get started by recording your very first customer sale."
+          actionLabel="Record a Sale"
+          actionHref="/sales"
+        />
+      </AppFrame>
+    );
+  }
+
+  const now = new Date();
+  const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const prevStartDate = new Date(now.getTime() - 2 * days * 24 * 60 * 60 * 1000);
+
+  // 1. Fetch current sales in scope
+  const currentSales = await dubaiDb.sale.findMany({
+    where: {
+      createdAt: { gte: startDate },
+    },
+    include: {
+      items: true,
+    },
+  });
+
+  // 2. Fetch previous sales in scope
+  const previousSales = await dubaiDb.sale.findMany({
+    where: {
+      createdAt: {
+        gte: prevStartDate,
+        lt: startDate,
+      },
+    },
+  });
+
+  // 3. Low stock count
+  const lowStockCount = await dubaiDb.product.count({
+    where: {
+      stock: { lt: 10 },
+    },
+  });
+
+  // Calculate statistics
+  const currentRevenue = currentSales.reduce((sum, s) => sum + s.totalAmount, 0);
+  const previousRevenue = previousSales.reduce((sum, s) => sum + s.totalAmount, 0);
+  const currentOrders = currentSales.length;
+  const previousOrders = previousSales.length;
+
+  const getDelta = (curr: number, prev: number) => {
+    if (prev === 0) return undefined;
+    const diffPercent = ((curr - prev) / prev) * 100;
+    return {
+      label: `${diffPercent >= 0 ? "+" : ""}${diffPercent.toFixed(0)}%`,
+      isPositive: diffPercent >= 0,
+    };
+  };
+
+  const revenueDelta = getDelta(currentRevenue, previousRevenue);
+  const ordersDelta = getDelta(currentOrders, previousOrders);
+
+  // Top Category sold in current period
+  const productIds = Array.from(new Set(currentSales.flatMap((s) => s.items.map((i) => i.productId))));
+  const products = await dubaiDb.product.findMany({
+    where: { id: { in: productIds } },
+  });
+  const productMap = new Map(products.map((p) => [p.id, p]));
+
+  const categoryQty: Record<string, number> = {};
+  for (const sale of currentSales) {
+    for (const item of sale.items) {
+      const prod = productMap.get(item.productId);
+      if (prod) {
+        categoryQty[prod.category] = (categoryQty[prod.category] || 0) + item.quantity;
+      }
+    }
+  }
+
+  let topCategory = "N/A";
+  let maxCatQty = 0;
+  for (const [cat, qty] of Object.entries(categoryQty)) {
+    if (qty > maxCatQty) {
+      maxCatQty = qty;
+      topCategory = cat;
+    }
+  }
+
+  // Top Selling Products
+  const productQty: Record<string, number> = {};
+  for (const sale of currentSales) {
+    for (const item of sale.items) {
+      productQty[item.productId] = (productQty[item.productId] || 0) + item.quantity;
+    }
+  }
+
+  const topProductsSorted = Object.entries(productQty)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  const topProductIds = topProductsSorted.map(([id]) => id);
+  const topProductsDetails = await dubaiDb.product.findMany({
+    where: { id: { in: topProductIds } },
+  });
+  const topProductsMap = new Map(topProductsDetails.map((p) => [p.id, p]));
+
+  const topItems = topProductsSorted.map(([id, qty]) => {
+    const prod = topProductsMap.get(id);
+    return {
+      name: prod?.name || "Unknown Product",
+      category: prod?.category || "Grocery",
+      quantity: qty,
+      price: prod?.price || 0,
+    };
+  });
+
+  // Chart data
+  const salesByDay: Record<string, number> = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const label = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    salesByDay[label] = 0;
+  }
+
+  for (const sale of currentSales) {
+    const label = new Date(sale.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    if (label in salesByDay) {
+      salesByDay[label] += sale.totalAmount;
+    }
+  }
+
+  const chartData = Object.entries(salesByDay).map(([label, value]) => ({
+    label,
+    value,
+  }));
+
+  return (
+    <AppFrame pageTitle="Dashboard">
+      <div className="space-y-6">
+        {/* Stat Row */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Revenue"
+            value={formatCurrency(currentRevenue, "AED")}
+            icon={<BanknotesIcon />}
+            delta={revenueDelta}
+            highlighted
+          />
+          <StatCard
+            label="Sales Count"
+            value={currentOrders}
+            icon={<ShoppingBagIcon />}
+            delta={ordersDelta}
+          />
+          <StatCard
+            label="Low Stock Items"
+            value={lowStockCount}
+            icon={<AlertTriangleIcon />}
+          />
+          <StatCard
+            label="Top Category"
+            value={topCategory}
+            icon={<TagIcon />}
+          />
         </div>
-      </section>
-    </main>
+
+        {/* Charts & Activity Grid */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <SalesChart data={chartData} currency="AED" />
+          </div>
+          <div>
+            <TopProductsList items={topItems} currency="AED" />
+          </div>
+        </div>
+      </div>
+    </AppFrame>
   );
 }

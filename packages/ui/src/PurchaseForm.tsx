@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "./Toast";
+import { Button } from "./Button";
+import { formatCurrency } from "./formatCurrency";
 
 type Product = { id: string; name: string; price: number; stock: number; category: string };
 type LineItem = { productId: string; quantity: number; unitCost: number };
@@ -21,9 +24,11 @@ type Props = {
 
 export function PurchaseForm({ products, currency, createPurchaseOrderAction }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [vendorName, setVendorName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [items, setItems] = useState<LineItem[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const totalAmount = items.reduce((sum, item) => sum + item.quantity * item.unitCost, 0);
 
@@ -45,23 +50,26 @@ export function PurchaseForm({ products, currency, createPurchaseOrderAction }: 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!vendorName || items.length === 0) {
-      alert("Please enter a vendor name and add at least one item.");
+      toast("Please enter a vendor name and add at least one item.", "warning");
       return;
     }
+    
+    setIsSubmitting(true);
     try {
       await createPurchaseOrderAction({ vendorName, contactPhone, totalAmount, items });
-      alert("Purchase order created successfully.");
+      toast("Purchase order created successfully.", "success");
       router.push("/purchases");
       router.refresh();
     } catch {
-      alert("Failed to create purchase order.");
+      toast("Failed to create purchase order.", "danger");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">New Purchase Order</h1>
-      <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6">
+    <div className="max-w-4xl">
+      <form onSubmit={handleSubmit} className="rounded-lg bg-white p-6 shadow">
         <div className="grid grid-cols-2 gap-6 mb-8">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Name *</label>
@@ -86,9 +94,9 @@ export function PurchaseForm({ products, currency, createPurchaseOrderAction }: 
 
         <div className="mb-4 flex justify-between items-center border-b pb-2">
           <h2 className="text-xl font-semibold">Line Items</h2>
-          <button type="button" onClick={addItem} className="text-brand hover:underline font-medium">
+          <Button variant="ghost" type="button" onClick={addItem}>
             + Add Item
-          </button>
+          </Button>
         </div>
 
         {items.length === 0 ? (
@@ -136,16 +144,17 @@ export function PurchaseForm({ products, currency, createPurchaseOrderAction }: 
                   }}
                 />
               </div>
-              <div className="w-28 pb-2 text-right font-medium">
-                {currency} {(item.quantity * item.unitCost).toFixed(2)}
+              <div className="w-28 pb-2 text-right font-medium tabular-nums">
+                {formatCurrency(item.quantity * item.unitCost, currency)}
               </div>
-              <button
+              <Button
+                variant="ghost"
                 type="button"
                 onClick={() => removeItem(index)}
-                className="pb-2 text-red-500 hover:underline text-sm font-medium"
+                className="text-red-500 hover:text-red-700"
               >
                 Remove
-              </button>
+              </Button>
             </div>
           ))
         )}
@@ -153,15 +162,15 @@ export function PurchaseForm({ products, currency, createPurchaseOrderAction }: 
         <div className="flex justify-between items-center mt-8 pt-4 border-t border-gray-200">
           <div className="text-xl">
             <span className="text-gray-500 mr-2">Total:</span>
-            <span className="font-bold text-gray-900"> {currency} {totalAmount.toFixed(2)}</span>
+            <span className="font-bold text-gray-900 tabular-nums">{formatCurrency(totalAmount, currency)}</span>
           </div>
-          <button
+          <Button
             type="submit"
+            loading={isSubmitting}
             disabled={items.length === 0 || !vendorName}
-            className="bg-brand text-brandText px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Create Purchase Order
-          </button>
+          </Button>
         </div>
       </form>
     </div>

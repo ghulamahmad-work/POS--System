@@ -1,5 +1,6 @@
 import { dubaiDb } from "@repo/database-prisma/dubai";
 import { ReportsDashboard } from "@repo/ui/ReportsDashboard";
+import { AppFrame } from "../AppFrame";
 
 export const dynamic = "force-dynamic";
 
@@ -50,14 +51,26 @@ export default async function ReportsPage() {
   });
 
   return (
-    <ReportsDashboard
-      totalRevenue={totalRevenue}
-      totalPurchaseSpend={totalPurchaseSpend}
-      netFigure={totalRevenue - totalPurchaseSpend}
-      startOfMonth={startOfMonth.toLocaleDateString()}
-      lowStockProducts={lowStockProducts}
-      recentSales={recentSales}
-      currency="AED"
-    />
+    <AppFrame
+      pageTitle="Reports"
+      headerActions={
+        <button
+          type="button"
+          className="rounded-md border border-[var(--border-subtle)] bg-[var(--panel)] px-3 py-2 text-sm font-medium shadow-sm transition hover:bg-[var(--surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-500)]"
+        >
+          Since {startOfMonth.toLocaleDateString()}
+        </button>
+      }
+    >
+      <ReportsDashboard
+        totalRevenue={totalRevenue}
+        totalPurchaseSpend={totalPurchaseSpend}
+        netFigure={totalRevenue - totalPurchaseSpend}
+        startOfMonth={startOfMonth.toLocaleDateString()}
+        lowStockProducts={lowStockProducts}
+        recentSales={recentSales}
+        currency="AED"
+      />
+    </AppFrame>
   );
 }

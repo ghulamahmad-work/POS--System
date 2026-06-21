@@ -4,6 +4,16 @@
 :root {
   --color-brand: #00C853;
   --color-brand-text: #ffffff;
+  --brand-50: #ecfdf3;
+  --brand-500: #16a34a;
+  --brand-600: #00a344;
+  --brand-700: #04763a;
+  --canvas: #f6f8fb;
+  --panel: #ffffff;
+  --surface-hover: #f0fdf4;
+  --border-subtle: #dfe5eb;
+  --text-primary: #111827;
+  --text-muted: #667085;
 }
 
 @theme {
@@ -14,4 +24,9 @@
 a {
   color: inherit;
   text-decoration: none;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
 }

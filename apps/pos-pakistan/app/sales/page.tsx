@@ -1,18 +1,22 @@
 import { getProducts } from "../../actions/product";
 import { checkout } from "../../actions/sales";
 import { SalesClient } from "@repo/ui/SalesClient";
+import { AppFrame } from "../AppFrame";
 
 export const dynamic = "force-dynamic";
 
 export default async function SalesPage() {
   const products = await getProducts();
+
   return (
-    <SalesClient
-      initialProducts={products}
-      taxRate={0.17}
-      taxLabel="GST"
-      currency="₨"
-      checkoutAction={checkout}
-    />
+    <AppFrame pageTitle="Sales">
+      <SalesClient
+        initialProducts={products}
+        taxRate={0.17}
+        taxLabel="GST"
+        currency="PKR"
+        checkoutAction={checkout}
+      />
+    </AppFrame>
   );
 }

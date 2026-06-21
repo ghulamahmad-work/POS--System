@@ -22,6 +22,18 @@ export function createProductActions(productService: any) {
       };
 
       // Dynamically map Dubai fields if present
+      if (formData.has("sku")) {
+        const sku = formData.get("sku") as string;
+        baseData.sku = sku.trim() ? sku.trim() : null;
+      }
+      if (formData.has("unitOfMeasure")) {
+        const unit = formData.get("unitOfMeasure") as string;
+        baseData.unitOfMeasure = unit ? unit : null;
+      }
+      if (formData.has("unitQuantity")) {
+        const qty = formData.get("unitQuantity") as string;
+        baseData.unitQuantity = qty ? parseFloat(qty) : null;
+      }
       if (formData.has("expiryDate")) {
         baseData.expiryDate = formData.get("expiryDate") ? new Date(formData.get("expiryDate") as string) : null;
       }
@@ -30,8 +42,21 @@ export function createProductActions(productService: any) {
       }
 
       // Dynamically map Pakistan fields if present
+      if (formData.has("brand")) {
+        const brand = formData.get("brand") as string;
+        baseData.brand = brand.trim() ? brand.trim() : null;
+      }
+      if (formData.has("modelNumber")) {
+        const model = formData.get("modelNumber") as string;
+        baseData.modelNumber = model.trim() ? model.trim() : null;
+      }
+      if (formData.has("serialNumber")) {
+        const serial = formData.get("serialNumber") as string;
+        baseData.serialNumber = serial.trim() ? serial.trim() : null;
+      }
       if (formData.has("voltage")) {
-        baseData.voltage = formData.get("voltage") as string;
+        const voltage = formData.get("voltage") as string;
+        baseData.voltage = voltage.trim() ? voltage.trim() : null;
       }
       if (formData.has("warrantyMonths")) {
         baseData.warrantyMonths = formData.get("warrantyMonths") ? parseInt(formData.get("warrantyMonths") as string) : null;
@@ -39,7 +64,6 @@ export function createProductActions(productService: any) {
 
       await productService.createProduct(baseData);
       revalidatePath("/products");
-      redirect("/products");
     },
 
     async updateProduct(id: string, formData: FormData) {
@@ -50,14 +74,39 @@ export function createProductActions(productService: any) {
         category: formData.get("category") as string,
       };
 
+      if (formData.has("sku")) {
+        const sku = formData.get("sku") as string;
+        baseData.sku = sku.trim() ? sku.trim() : null;
+      }
+      if (formData.has("unitOfMeasure")) {
+        const unit = formData.get("unitOfMeasure") as string;
+        baseData.unitOfMeasure = unit ? unit : null;
+      }
+      if (formData.has("unitQuantity")) {
+        const qty = formData.get("unitQuantity") as string;
+        baseData.unitQuantity = qty ? parseFloat(qty) : null;
+      }
       if (formData.has("expiryDate")) {
         baseData.expiryDate = formData.get("expiryDate") ? new Date(formData.get("expiryDate") as string) : null;
       }
       if (formData.has("weightGrams")) {
         baseData.weightGrams = formData.get("weightGrams") ? parseInt(formData.get("weightGrams") as string) : null;
       }
+      if (formData.has("brand")) {
+        const brand = formData.get("brand") as string;
+        baseData.brand = brand.trim() ? brand.trim() : null;
+      }
+      if (formData.has("modelNumber")) {
+        const model = formData.get("modelNumber") as string;
+        baseData.modelNumber = model.trim() ? model.trim() : null;
+      }
+      if (formData.has("serialNumber")) {
+        const serial = formData.get("serialNumber") as string;
+        baseData.serialNumber = serial.trim() ? serial.trim() : null;
+      }
       if (formData.has("voltage")) {
-        baseData.voltage = formData.get("voltage") as string;
+        const voltage = formData.get("voltage") as string;
+        baseData.voltage = voltage.trim() ? voltage.trim() : null;
       }
       if (formData.has("warrantyMonths")) {
         baseData.warrantyMonths = formData.get("warrantyMonths") ? parseInt(formData.get("warrantyMonths") as string) : null;
@@ -65,7 +114,6 @@ export function createProductActions(productService: any) {
 
       await productService.updateProduct(id, baseData);
       revalidatePath("/products");
-      redirect("/products");
     },
 
     async deleteProduct(id: string) {

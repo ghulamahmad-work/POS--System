@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "./Toast";
+import { Badge } from "./Badge";
+import { Button } from "./Button";
+import { formatCurrency } from "./formatCurrency";
 
 type Product = { id: string; name: string; price: number; stock: number; category: string };
 type CartItem = Product & { quantity: number };
@@ -25,7 +29,9 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
   const [products, setProducts] = useState(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [search, setSearch] = useState("");
+  const [isCheckingOut, setIsCheckingOut] = useState<string | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
@@ -65,6 +71,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
 
   const handleCheckout = async (paymentType: string) => {
     if (cart.length === 0) return;
+    setIsCheckingOut(paymentType);
     try {
       await checkoutAction({
         totalAmount,
@@ -76,7 +83,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
           unitPrice: item.price,
         })),
       });
-      alert(`Sale completed via ${paymentType}!`);
+      toast(`Sale completed via ${paymentType}!`, "success");
       const snapshot = cart;
       setCart([]);
       setProducts(prev =>
@@ -87,15 +94,16 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
       );
       router.refresh();
     } catch {
-      alert("Checkout failed.");
+      toast("Checkout failed.", "danger");
+    } finally {
+      setIsCheckingOut(null);
     }
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex min-h-[calc(100vh-9rem)] overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-gray-50 shadow-sm">
       {/* Left: Products */}
       <div className="w-2/3 p-6 flex flex-col border-r border-gray-200">
-        <h1 className="text-2xl font-bold mb-4 text-gray-900">Products Checkout</h1>
         <input
           type="text"
           placeholder="Search products..."
@@ -112,7 +120,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
             >
               <div>
                 <h3 className="font-semibold text-lg text-gray-900">{p.name}</h3>
-                <p className="text-brand font-medium mt-1">{currency}{p.price.toFixed(2)}</p>
+                <p className="text-[var(--brand-600)] font-medium mt-1 tabular-nums">{formatCurrency(p.price, currency)}</p>
               </div>
               <div className="mt-4">
                 <span className={`text-sm px-2 py-1 rounded-full ${p.stock > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
@@ -153,10 +161,10 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.id} className="flex justify-between items-center mb-4 p-4 border border-gray-100 rounded-xl bg-gray-50">
+              <div key={item.id} className="flex justify-between items-center mb-4 p-4 border border-gray-100 rounded-xl bg-[var(--panel)] shadow-sm">
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900">{item.name}</h4>
-                  <p className="text-gray-500 text-sm mt-1">{currency}{item.price.toFixed(2)} each</p>
+                  <p className="text-[var(--text-muted)] text-sm mt-1 tabular-nums">{formatCurrency(item.price, currency)} each</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
@@ -172,33 +180,36 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
         </div>
 
         <div className="border-t border-gray-200 pt-6 mt-4">
-          <div className="flex justify-between mb-3 text-gray-600">
+          <div className="flex justify-between mb-3 text-[var(--text-muted)]">
             <span>Subtotal</span>
-            <span className="font-medium text-gray-900">{currency}{subtotal.toFixed(2)}</span>
+            <span className="font-medium text-gray-900 tabular-nums">{formatCurrency(subtotal, currency)}</span>
           </div>
-          <div className="flex justify-between mb-4 text-gray-600">
+          <div className="flex justify-between mb-4 text-[var(--text-muted)]">
             <span>{taxLabel} ({(taxRate * 100).toFixed(0)}%)</span>
-            <span className="font-medium text-gray-900">{currency}{taxAmount.toFixed(2)}</span>
+            <span className="font-medium text-gray-900 tabular-nums">{formatCurrency(taxAmount, currency)}</span>
           </div>
           <div className="flex justify-between font-bold text-2xl mb-8 text-gray-900">
             <span>Total</span>
-            <span>{currency}{totalAmount.toFixed(2)}</span>
+            <span className="tabular-nums">{formatCurrency(totalAmount, currency)}</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <button
+            <Button
+              size="lg"
               onClick={() => handleCheckout("cash")}
-              disabled={cart.length === 0}
-              className="bg-brand text-brandText py-4 rounded-xl font-bold text-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition-all active:scale-[0.98]"
+              disabled={cart.length === 0 || (isCheckingOut !== null && isCheckingOut !== "cash")}
+              loading={isCheckingOut === "cash"}
             >
               Pay Cash
-            </button>
-            <button
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
               onClick={() => handleCheckout("card")}
-              disabled={cart.length === 0}
-              className="bg-gray-800 text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition-all active:scale-[0.98]"
+              disabled={cart.length === 0 || (isCheckingOut !== null && isCheckingOut !== "card")}
+              loading={isCheckingOut === "card"}
             >
               Pay Card
-            </button>
+            </Button>
           </div>
         </div>
       </div>
