@@ -180,9 +180,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   for (const sale of currentSales) {
     const label = new Date(sale.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-    if (label in salesByDay) {
-      salesByDay[label] += sale.totalAmount;
-    }
+if (label in salesByDay) {
+  salesByDay[label] = (salesByDay[label] ?? 0) + sale.totalAmount;
+}
   }
 
   const chartData = Object.entries(salesByDay).map(([label, value]) => ({
