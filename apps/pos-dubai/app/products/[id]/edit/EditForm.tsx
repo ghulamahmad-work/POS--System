@@ -33,8 +33,7 @@ export function EditForm({ product }: Props) {
     stock: product.stock,
     category: product.category,
     sku: product.sku,
-    expiryDate: product.expiryDate,
-    unitOfMeasure: product.unitOfMeasure ?? (product.weightGrams ? "g" : ""),
+expiryDate: product.expiryDate ? product.expiryDate.toISOString().split("T")[0] : null,    unitOfMeasure: product.unitOfMeasure ?? (product.weightGrams ? "g" : ""),
     unitQuantity: product.unitQuantity ?? product.weightGrams,
   };
 
