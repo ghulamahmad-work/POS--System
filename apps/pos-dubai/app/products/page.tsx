@@ -4,6 +4,7 @@ import { AppFrame } from "../AppFrame";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/Table";
 import { ProductActions } from "@repo/ui/ProductActions";
 import { formatCurrency } from "@repo/ui/formatCurrency";
+import { ProductSearchBar } from "@repo/ui/ProductSearchBar";
 
 export const revalidate = 60;
 
@@ -42,45 +43,17 @@ function productMatchesQuery(product: Product, query: string) {
   return searchableValues.includes(query);
 }
 
-function productHeaderActions(query: string) {
-  return (
-    <div className="flex flex-wrap items-center gap-3">
-      <label className="sr-only" htmlFor="product-search">
-        Search products
-      </label>
-      <form className="flex items-center gap-3" method="get">
-        <input
-          id="product-search"
-          name="q"
-          type="search"
-          defaultValue={query}
-          placeholder="Search products"
-          className="h-10 w-full min-w-0 rounded-md border border-(--border-subtle) bg-(--panel) px-3 text-sm shadow-sm outline-none transition placeholder:text-(--text-muted) focus:border-(--brand-500) focus:ring-2 focus:ring-(--brand-500) sm:w-64"
-        />
-        <button
-          type="submit"
-          className="inline-flex h-10 items-center rounded-md border border-(--border-subtle) bg-(--panel) px-4 text-sm font-semibold text-(--text-primary) shadow-sm transition hover:bg-(--surface-muted) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-500)"
-        >
-          Search
-        </button>
-        {query ? (
-          <Link
-            href="/products"
-            className="inline-flex h-10 items-center rounded-md border border-(--border-subtle) px-4 text-sm font-semibold text-(--text-primary) shadow-sm transition hover:bg-(--surface-muted) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-500)"
-          >
-            Clear
-          </Link>
-        ) : null}
-      </form>
-      <Link
-        href="/products/new"
-        className="inline-flex h-10 items-center rounded-md bg-(--brand-600) px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-(--brand-700) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-500)"
-      >
-        Add Product
-      </Link>
-    </div>
-  );
-}
+const headerActions = (
+  <div className="flex flex-wrap items-center gap-3">
+    <ProductSearchBar />
+    <Link
+      href="/products/new"
+      className="inline-flex h-10 items-center rounded-md bg-(--brand-600)/80 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-(--brand-700)/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-500)"
+    >
+      Add Product
+    </Link>
+  </div>
+);
 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const params = await searchParams;
@@ -89,7 +62,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const filteredProducts = products.filter((product: Product) => productMatchesQuery(product, query));
 
   return (
-    <AppFrame pageTitle="Products" headerActions={productHeaderActions(params.q ?? "")}>
+    <AppFrame pageTitle="Products" headerActions={headerActions}>
       <div className="overflow-hidden rounded-lg border border-(--border-subtle) bg-(--panel) shadow-sm">
         <div className="overflow-x-auto">
           <Table className="min-w-190">
@@ -123,7 +96,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                     </TableCell>
                     <TableCell className="text-(--text-muted)">
                       {product.expiryDate
-                        ? new Date(product.expiryDate).toLocaleDateString()
+                        ? new Date(product.expiryDate).toLocaleDateString("en-US")
                         : "N/A"}
                     </TableCell>
                     <TableCell className="text-right align-middle">

@@ -115,7 +115,7 @@ export function PurchaseListClient({
                     </span>
                   </TableCell>
                   <TableCell className="text-(--text-muted)">
-                    {new Date(po.createdAt).toLocaleDateString()}
+                    {new Date(po.createdAt).toLocaleDateString("en-US")}
                   </TableCell>
                   <TableCell className="text-right space-x-2">
                     {po.status === "pending" && (

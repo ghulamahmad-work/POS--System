@@ -34,25 +34,13 @@ export function StatCard({ label, value, icon, delta, highlighted = false }: Sta
         <div className="absolute -right-6 -top-6 size-24 rounded-full bg-[var(--brand-500)]/10 blur-xl pointer-events-none" />
       )}
 
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className={cx("text-xs font-semibold uppercase tracking-wider", highlighted ? "text-[var(--brand-600)]" : "text-[var(--text-muted)]")}>
-            {label}
-          </p>
-          <p className="mt-2 text-xl font-bold tracking-tight tabular-nums truncate">
-            {value}
-          </p>
-        </div>
-        <div
-          className={cx(
-            "flex size-10 shrink-0 items-center justify-center rounded-lg shadow-sm ring-1",
-            highlighted
-              ? "bg-[var(--brand-600)] text-white ring-[var(--brand-600)]/10"
-              : "bg-[var(--brand-50)] text-[var(--brand-600)] ring-[var(--brand-500)]/10"
-          )}
-        >
-          {icon}
-        </div>
+      <div className="flex items-center gap-3">
+        <p className={cx("text-sm font-semibold uppercase tracking-wider", highlighted ? "text-[var(--brand-600)]" : "text-[var(--text-muted)]")}>
+          {label}
+        </p>
+        <p className="text-lg font-bold tracking-tight tabular-nums">
+          {value}
+        </p>
       </div>
 
       {delta && (

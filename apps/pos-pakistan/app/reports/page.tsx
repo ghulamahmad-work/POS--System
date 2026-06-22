@@ -73,7 +73,7 @@ export default async function ReportsPage() {
           totalRevenue={totalRevenue}
           totalPurchaseSpend={totalPurchaseSpend}
           netFigure={totalRevenue - totalPurchaseSpend}
-          startOfMonth={startOfMonth.toLocaleDateString()}
+          startOfMonth={startOfMonth.toLocaleDateString("en-US")}
           lowStockProducts={lowStockProducts}
           recentSales={serializedRecentSales}
           currency="PKR"

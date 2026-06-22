@@ -12,6 +12,9 @@ type PurchaseTransactionDb = {
     update: (args: any) => Promise<any>;
     delete: (args: any) => Promise<any>;
   };
+  purchaseOrderItem: {
+    deleteMany: (args: any) => Promise<any>;
+  };
   product: {
     update: (args: any) => Promise<any>;
   };
@@ -80,8 +83,13 @@ export function createPurchasesService(db: PurchasesDb) {
       }),
 
     deletePurchaseOrder: (id: string) =>
-      db.purchaseOrder.delete({
-        where: { id },
+      db.$transaction(async (tx) => {
+        await tx.purchaseOrderItem.deleteMany({
+          where: { purchaseOrderId: id },
+        });
+        await tx.purchaseOrder.delete({
+          where: { id },
+        });
       }),
   };
 }

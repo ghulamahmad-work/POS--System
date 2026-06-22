@@ -201,8 +201,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../../apps/pos-dubai/.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma/dubai",
   "clientVersion": "5.22.0",

@@ -1,5 +1,4 @@
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 // Factory function accepting your custom database service instance
 export function createProductActions(productService: any) {
