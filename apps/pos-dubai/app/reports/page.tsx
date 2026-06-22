@@ -53,14 +53,6 @@ export default async function ReportsPage() {
   return (
     <AppFrame
       pageTitle="Reports"
-      headerActions={
-        <button
-          type="button"
-          className="rounded-md border border-[var(--border-subtle)] bg-[var(--panel)] px-3 py-2 text-sm font-medium shadow-sm transition hover:bg-[var(--surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-500)]"
-        >
-          Since {startOfMonth.toLocaleDateString()}
-        </button>
-      }
     >
       <ReportsDashboard
         totalRevenue={totalRevenue}

@@ -12,11 +12,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex flex-col gap-1.5">
-        <label htmlFor={inputId} className="text-sm font-medium text-[var(--text-primary)]">
+        <label htmlFor={inputId} className="text-sm font-semibold text-[var(--text-primary)] tracking-tight">
           {label}
-          {required && <span className="text-red-500 ml-0.5">*</span>}
+          {required && <span className="text-[var(--brand-500)] ml-0.5">*</span>}
           {optional && !required && (
-            <span className="text-[var(--text-muted)] font-normal ml-1">(optional)</span>
+            <span className="text-[var(--text-muted)] font-normal ml-1.5 text-xs">(optional)</span>
           )}
         </label>
         <input
@@ -24,12 +24,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           required={required}
           className={[
-            "border border-[var(--border-subtle)] bg-[var(--panel)] p-2 rounded-md w-full text-[var(--text-primary)]",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-500)] focus:border-[var(--brand-500)]",
+            "h-10 px-3 rounded-lg w-full text-sm text-[var(--text-primary)]",
+            "bg-[var(--canvas)] border border-[var(--border-subtle)]",
+            "transition-all duration-150",
+            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-500)]/30 focus:border-[var(--brand-500)]",
             "placeholder:text-[var(--text-muted)]",
-            monospace ? "font-mono text-sm" : "",
+            "disabled:opacity-50 disabled:cursor-not-allowed",
+            monospace ? "font-mono text-xs tracking-wide" : "",
             className ?? "",
-          ].join(" ")}
+          ].filter(Boolean).join(" ")}
           {...props}
         />
       </div>

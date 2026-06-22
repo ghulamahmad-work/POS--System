@@ -163,6 +163,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const topItems = topProductsSorted.map(([id, qty]) => {
     const prod = topProductsMap.get(id);
     return {
+      id,
       name: prod?.name || "Unknown Product",
       category: prod?.category || "Electrical",
       quantity: qty,

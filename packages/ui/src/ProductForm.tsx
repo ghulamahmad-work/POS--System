@@ -16,6 +16,7 @@ export type ProductFieldConfig = {
   step?: string | number;
   options?: { value: string; label: string }[];
   monospace?: boolean;
+  fullWidth?: boolean;
 };
 
 type ProductFormProps = {
@@ -29,7 +30,7 @@ type ProductFormProps = {
 
 function formatDefaultValue(
   field: ProductFieldConfig,
-  value: string | number | null | undefined
+  value: string | number | null | undefined,
 ): string {
   if (value === null || value === undefined || value === "") return "";
   if (field.type === "date") {
@@ -62,44 +63,50 @@ export function ProductForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 w-full">
       {fields.map((field) => {
         const defaultValue = formatDefaultValue(field, defaultValues[field.name]);
+        const spanFull = field.fullWidth ? "sm:col-span-2" : "";
 
         if (field.type === "select" && field.options) {
           return (
-            <Select
-              key={field.name}
-              name={field.name}
-              label={field.label}
-              required={field.required}
-              optional={field.optional}
-              defaultValue={defaultValue}
-              options={field.options}
-            />
+            <div key={field.name} className={spanFull}>
+              <Select
+                name={field.name}
+                label={field.label}
+                required={field.required}
+                optional={field.optional}
+                defaultValue={defaultValue}
+                options={field.options}
+              />
+            </div>
           );
         }
 
         return (
-          <Input
-            key={field.name}
-            name={field.name}
-            type={field.type}
-            label={field.label}
-            required={field.required}
-            optional={field.optional}
-            placeholder={field.placeholder}
-            min={field.min}
-            step={field.step}
-            defaultValue={defaultValue}
-            monospace={field.monospace}
-          />
+          <div key={field.name} className={spanFull}>
+            <Input
+              name={field.name}
+              type={field.type}
+              label={field.label}
+              required={field.required}
+              optional={field.optional}
+              placeholder={field.placeholder}
+              min={field.min}
+              step={field.step}
+              defaultValue={defaultValue}
+              monospace={field.monospace}
+            />
+          </div>
         );
       })}
 
-      <Button type="submit" loading={loading} className="mt-2 self-start">
-        {submitLabel}
-      </Button>
+      {/* Divider before submit */}
+<div className="sm:col-span-2 border-t border-[var(--border-subtle)] pt-4 mt-1">
+  <Button type="submit" loading={loading} className="w-full justify-center">
+    {submitLabel}
+  </Button>
+</div>
     </form>
   );
 }

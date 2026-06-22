@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "./Toast";
-import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { formatCurrency } from "./formatCurrency";
 
@@ -20,8 +19,8 @@ type CheckoutData = {
 type Props = {
   initialProducts: Product[];
   taxRate: number;
-  taxLabel: string; // e.g. "GST" or "VAT"
-  currency: string; 
+  taxLabel: string;
+  currency: string;
   checkoutAction: (data: CheckoutData) => Promise<void>;
 };
 
@@ -33,11 +32,22 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
   const router = useRouter();
   const { toast } = useToast();
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const normalizedSearch = search.trim().toLowerCase();
+  const filteredProducts = products.filter((product) => {
+    if (!normalizedSearch) {
+      return true;
+    }
+
+    const searchableValues = [product.name, product.category]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return searchableValues.includes(normalizedSearch);
+  });
 
   const addToCart = (product: Product) => {
+    if (product.stock === 0) return;
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
@@ -101,103 +111,184 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-9rem)] overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-gray-50 shadow-sm">
-      {/* Left: Products */}
-      <div className="w-2/3 p-6 flex flex-col border-r border-gray-200">
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="border border-gray-300 p-3 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-brand shadow-sm"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2 pb-6">
-          {filteredProducts.map(p => (
-            <div
-              key={p.id}
-              onClick={() => addToCart(p)}
-              className="border border-gray-200 bg-white p-5 rounded-xl cursor-pointer hover:shadow-md hover:border-brand transition-all flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900">{p.name}</h3>
-                <p className="text-[var(--brand-600)] font-medium mt-1 tabular-nums">{formatCurrency(p.price, currency)}</p>
-              </div>
-              <div className="mt-4">
-                <span className={`text-sm px-2 py-1 rounded-full ${p.stock > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                  {p.stock > 0 ? `${p.stock} in stock` : "Out of stock"}
-                </span>
-              </div>
-            </div>
-          ))}
-{filteredProducts.length === 0 && (
-  <div className="col-span-full flex flex-col items-center justify-center py-24 text-gray-500">
-    <p className="text-lg font-medium">
-      {search
-        ? `No products found for ${search}`
-        : "No products available"}
-    </p>
+    <div className="flex min-h-[calc(100vh-9rem)] overflow-hidden rounded-xl border border-(--border-subtle) bg-(--canvas) shadow-sm">
 
-    <p className="text-sm mt-2 text-gray-400">
-      {search
-        ? "Try a different search term."
-        : "Add products to begin selling."}
-    </p>
-  </div>
-)}
+      {/* ── Left: Product Grid ── */}
+      <div className="flex w-2/3 flex-col border-r border-(--border-subtle) p-5">
+
+        {/* Search */}
+        <div className="relative mb-5">
+          <svg className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-(--text-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search products…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="h-10 w-full rounded-lg border border-(--border-subtle) bg-(--panel) pl-9 pr-4 text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:border-(--brand-500) focus:outline-none focus:ring-2 focus:ring-(--brand-500)/30 transition-all"
+          />
+        </div>
+
+        {/* Grid */}
+        <div className="grid flex-1 auto-rows-max items-start grid-cols-2 gap-3 overflow-y-auto pb-2 lg:grid-cols-3">
+          {filteredProducts.map(p => {
+            const outOfStock = p.stock === 0;
+            const inCart = cart.find(c => c.id === p.id);
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => addToCart(p)}
+                disabled={outOfStock}
+                className={[
+                  "group flex min-h-24 self-start flex-col justify-between rounded-xl border p-3 text-left transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-500)",
+                  outOfStock
+                    ? "cursor-not-allowed border-(--border-subtle) bg-(--canvas) opacity-40"
+                    : inCart
+                    ? "border-(--brand-500) bg-(--brand-50)"
+                    : "border-(--border-subtle) bg-(--panel) hover:border-(--brand-500)/50 hover:bg-(--brand-50)/40 hover:shadow-sm",
+                ].join(" ")}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-(--text-primary)">{p.name}</p>
+                  </div>
+                  {inCart ? (
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-(--brand-500) text-[10px] font-bold text-white">
+                      {inCart.quantity}
+                    </span>
+                  ) : null}
+                </div>
+
+                <div className="mt-4 flex items-end justify-between gap-3">
+                  <div>
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-(--text-muted)">Price</p>
+                    <p className="mt-1 text-sm font-bold tabular-nums text-(--brand-600)">
+                      {formatCurrency(p.price, currency)}
+                    </p>
+                  </div>
+                  <span className={[
+                    "rounded-full px-2.5 py-1 text-[10px] font-semibold tabular-nums",
+                    outOfStock
+                      ? "bg-red-50 text-red-600"
+                      : p.stock <= 5
+                      ? "bg-amber-50 text-amber-700"
+                      : "bg-emerald-50 text-emerald-700",
+                  ].join(" ")}>
+                    {outOfStock ? "Out of stock" : `${p.stock} left`}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+
+          {filteredProducts.length === 0 && (
+            <div className="col-span-full flex flex-col items-center justify-center py-24 text-(--text-muted)">
+              <svg className="mb-4 size-12 opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              <p className="text-base font-semibold text-(--text-primary)">
+                {search ? `No results for "${search}"` : "No products available"}
+              </p>
+              <p className="mt-1 text-sm">
+                {search ? "Try a different search term." : "Add products to begin selling."}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Right: Cart */}
-      <div className="w-1/3 p-6 flex flex-col bg-white shadow-lg z-10">
-        <h2 className="text-2xl font-bold mb-6 text-gray-900">Current Cart</h2>
-        <div className="flex-1 overflow-y-auto pr-2">
-          {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16 mb-4 opacity-50">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-              </svg>
-              <p className="text-lg">Cart is empty</p>
-              <p className="text-sm mt-1">Click a product to add it</p>
-            </div>
-          ) : (
-            cart.map(item => (
-              <div key={item.id} className="flex justify-between items-center mb-4 p-4 border border-gray-100 rounded-xl bg-[var(--panel)] shadow-sm">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">{item.name}</h4>
-                  <p className="text-[var(--text-muted)] text-sm mt-1 tabular-nums">{formatCurrency(item.price, currency)} each</p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                    <button onClick={() => updateQuantity(item.id, -1)} className="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-medium transition-colors">-</button>
-                    <span className="px-3 font-medium min-w-[2rem] text-center">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, 1)} className="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-medium transition-colors">+</button>
-                  </div>
-                  <button onClick={() => removeItem(item.id)} className="text-red-500 hover:text-red-700 hover:underline text-xs font-medium transition-colors">Remove</button>
-                </div>
-              </div>
-            ))
+      {/* ── Right: Cart ── */}
+      <div className="flex w-1/3 flex-col bg-(--panel)">
+
+        {/* Cart header */}
+        <div className="flex items-center justify-between border-b border-(--border-subtle) px-5 py-4">
+          <h2 className="text-lg font-bold text-(--text-primary)">Current Cart</h2>
+          {cart.length > 0 && (
+            <span className="rounded-full bg-(--brand-500) px-2.5 py-0.5 text-xs font-bold text-white tabular-nums">
+              {cart.reduce((s, i) => s + i.quantity, 0)}
+            </span>
           )}
         </div>
 
-        <div className="border-t border-gray-200 pt-6 mt-4">
-          <div className="flex justify-between mb-3 text-[var(--text-muted)]">
+        {/* Cart items */}
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          {cart.length === 0 ? (
+            <div className="flex h-full flex-col items-center justify-center gap-2 text-(--text-muted)">
+              <svg className="size-14 opacity-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" x2="21" y1="6" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+              <p className="text-sm font-medium text-(--text-primary)">Cart is empty</p>
+              <p className="text-xs">Click a product to add it</p>
+            </div>
+          ) : (
+            <ul className="space-y-2">
+              {cart.map(item => (
+                <li key={item.id} className="flex items-start justify-between gap-3 rounded-lg border border-(--border-subtle) bg-(--canvas) p-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-(--text-primary)">{item.name}</p>
+                    <p className="mt-0.5 text-xs tabular-nums text-(--text-muted)">
+                      {formatCurrency(item.price, currency)} × {item.quantity} = <span className="font-semibold text-(--text-primary)">{formatCurrency(item.price * item.quantity, currency)}</span>
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <div className="flex items-center overflow-hidden rounded-lg border border-(--border-subtle) bg-(--panel)">
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, -1)}
+                        className="flex size-7 items-center justify-center text-(--text-muted) hover:bg-(--surface-hover) hover:text-(--text-primary) transition-colors text-base font-medium"
+                      >
+                        −
+                      </button>
+                      <span className="min-w-[1.75rem] text-center text-sm font-semibold tabular-nums text-[var(--text-primary)]">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, 1)}
+                        className="flex size-7 items-center justify-center text-(--text-muted) hover:bg-(--surface-hover) hover:text-(--text-primary) transition-colors text-base font-medium"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.id)}
+                      className="text-[10px] font-medium text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Totals & checkout */}
+        <div className="shrink-0 border-t border-[var(--border-subtle)] px-5 pt-4 pb-5 space-y-3">
+          <div className="flex justify-between text-sm text-[var(--text-muted)]">
             <span>Subtotal</span>
-            <span className="font-medium text-gray-900 tabular-nums">{formatCurrency(subtotal, currency)}</span>
+            <span className="tabular-nums font-medium text-[var(--text-primary)]">{formatCurrency(subtotal, currency)}</span>
           </div>
-          <div className="flex justify-between mb-4 text-[var(--text-muted)]">
+          <div className="flex justify-between text-sm text-[var(--text-muted)]">
             <span>{taxLabel} ({(taxRate * 100).toFixed(0)}%)</span>
-            <span className="font-medium text-gray-900 tabular-nums">{formatCurrency(taxAmount, currency)}</span>
+            <span className="tabular-nums font-medium text-[var(--text-primary)]">{formatCurrency(taxAmount, currency)}</span>
           </div>
-          <div className="flex justify-between font-bold text-2xl mb-8 text-gray-900">
-            <span>Total</span>
-            <span className="tabular-nums">{formatCurrency(totalAmount, currency)}</span>
+          <div className="flex justify-between border-t border-[var(--border-subtle)] pt-3">
+            <span className="text-base font-bold text-[var(--text-primary)]">Total</span>
+            <span className="text-xl font-bold tabular-nums text-[var(--text-primary)]">{formatCurrency(totalAmount, currency)}</span>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 pt-1">
             <Button
               size="lg"
               onClick={() => handleCheckout("cash")}
               disabled={cart.length === 0 || (isCheckingOut !== null && isCheckingOut !== "cash")}
               loading={isCheckingOut === "cash"}
+              className="justify-center"
             >
               Pay Cash
             </Button>
@@ -207,6 +298,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
               onClick={() => handleCheckout("card")}
               disabled={cart.length === 0 || (isCheckingOut !== null && isCheckingOut !== "card")}
               loading={isCheckingOut === "card"}
+              className="justify-center"
             >
               Pay Card
             </Button>

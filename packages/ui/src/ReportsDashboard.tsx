@@ -58,7 +58,6 @@ export function ReportsDashboard({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">Business Insights</h2>
-          <p className="text-sm text-[var(--text-muted)]">Detailed analytics and performance metrics</p>
         </div>
         <div className="flex items-center gap-1.5 self-start sm:self-auto bg-[var(--canvas)] p-1 rounded-lg border border-[var(--border-subtle)]">
           <Link
@@ -129,9 +128,6 @@ export function ReportsDashboard({
         <div className="overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--panel)] shadow-sm">
           <div className="border-b border-[var(--border-subtle)] p-5">
             <h3 className="text-base font-bold text-[var(--text-primary)]">Low Stock Alerts</h3>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5">
-              Products requiring immediate restocking
-            </p>
           </div>
           <Table>
             <TableHeader>
@@ -166,7 +162,6 @@ export function ReportsDashboard({
         <div className="overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--panel)] shadow-sm">
           <div className="border-b border-[var(--border-subtle)] p-5">
             <h3 className="text-base font-bold text-[var(--text-primary)]">Recent Sales Activity</h3>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5">Last 10 completed transactions</p>
           </div>
           <Table>
             <TableHeader>

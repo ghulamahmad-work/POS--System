@@ -119,15 +119,12 @@ export function AppShell({
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-current={active ? "page" : undefined}
                 className={cx(
-                  "group relative flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-500)]",
+                  "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-500)]",
                   active
                     ? "bg-[var(--brand-50)] text-[var(--brand-600)]"
                     : "text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]"
                 )}
               >
-                {active && (
-                  <span className="absolute left-1 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[var(--brand-500)]" />
-                )}
                 <Icon className="size-5 shrink-0" />
                 <span className="truncate">{item.label}</span>
               </Link>
@@ -145,7 +142,7 @@ export function AppShell({
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold leading-none text-[var(--text-primary)]">{userLabel}</p>
-              <p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Settings & Profile</p>
+           
             </div>
           </button>
         </div>
@@ -188,10 +185,6 @@ export function AppShell({
                     : "text-[var(--text-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]"
                 )}
               >
-                {active && (
-                  <span className="absolute left-1 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[var(--brand-500)]" />
-                )}
-                
                 <Icon className="size-5 shrink-0" />
                 
                 <span className={cx("truncate lg:inline transition-all duration-300", expanded ? "inline" : "hidden")}>
@@ -237,7 +230,6 @@ export function AppShell({
             </div>
             <div className={cx("min-w-0 lg:block", expanded ? "block" : "hidden")}>
               <p className="truncate text-sm font-semibold leading-none text-[var(--text-primary)]">{userLabel}</p>
-              <p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Settings & Profile</p>
             </div>
           </button>
         </div>

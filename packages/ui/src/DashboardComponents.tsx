@@ -39,7 +39,7 @@ export function StatCard({ label, value, icon, delta, highlighted = false }: Sta
           <p className={cx("text-xs font-semibold uppercase tracking-wider", highlighted ? "text-[var(--brand-600)]" : "text-[var(--text-muted)]")}>
             {label}
           </p>
-          <p className="mt-2 text-2xl font-bold tracking-tight tabular-nums leading-none truncate">
+          <p className="mt-2 text-xl font-bold tracking-tight tabular-nums truncate">
             {value}
           </p>
         </div>
@@ -227,6 +227,7 @@ export function SalesChart({ data, currency }: SalesChartProps) {
 
 export type TopProductsListProps = {
   items: {
+    id: string;
     name: string;
     category: string;
     quantity: number;
@@ -258,7 +259,7 @@ export function TopProductsList({ items, currency }: TopProductsListProps) {
       ) : (
         <div className="flex-1 space-y-4">
           {items.map((item, index) => (
-            <div key={item.name} className="flex items-center justify-between gap-3 p-2 rounded-lg hover:bg-[var(--surface-hover)] transition-colors">
+            <div key={`${item.id}-${index}`} className="flex items-center justify-between gap-3 p-2 rounded-lg hover:bg-[var(--surface-hover)] transition-colors">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-50)] text-xs font-bold text-[var(--brand-600)] border border-[var(--brand-500)]/10">
                   #{index + 1}
