@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ProductActions } from "@repo/ui/ProductActions";
 import { formatCurrency } from "@repo/ui/formatCurrency";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type PageProps = {
   searchParams: Promise<{ q?: string }>;

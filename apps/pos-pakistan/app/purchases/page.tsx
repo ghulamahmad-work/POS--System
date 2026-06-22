@@ -3,7 +3,7 @@ import { getPurchaseOrders, markAsReceived, deletePurchaseOrder } from "../../ac
 import { PurchaseListClient } from "@repo/ui/PurchaseListClient";
 import { AppFrame } from "../AppFrame";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function PurchasesPage() {
   const purchaseOrders = await getPurchaseOrders();

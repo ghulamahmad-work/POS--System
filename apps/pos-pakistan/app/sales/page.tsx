@@ -3,7 +3,7 @@ import { checkout } from "../../actions/sales";
 import { SalesClient } from "@repo/ui/SalesClient";
 import { AppFrame } from "../AppFrame";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function SalesPage() {
   const products = await getProducts();
