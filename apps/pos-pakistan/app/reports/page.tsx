@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { pakistanDb } from "@repo/database-prisma/pakistan";
 import { ReportsDashboard } from "@repo/ui/ReportsDashboard";
 import { AppFrame } from "../AppFrame";
@@ -57,20 +58,27 @@ export default async function ReportsPage() {
   const totalRevenue = sales.reduce((sum, sale) => sum + sale.totalAmount, 0);
   const totalPurchaseSpend = purchases.reduce((sum, purchase) => sum + purchase.totalAmount, 0);
 
+  // Convert Date objects to ISO strings for serialization
+  const serializedRecentSales = recentSales.map(sale => ({
+    ...sale,
+    createdAt: sale.createdAt instanceof Date ? sale.createdAt.toISOString() : sale.createdAt,
+  }));
+
   return (
     <AppFrame
       pageTitle="Reports"
- 
     >
-      <ReportsDashboard
-        totalRevenue={totalRevenue}
-        totalPurchaseSpend={totalPurchaseSpend}
-        netFigure={totalRevenue - totalPurchaseSpend}
-        startOfMonth={startOfMonth.toLocaleDateString()}
-        lowStockProducts={lowStockProducts}
-        recentSales={recentSales}
-        currency="PKR"
-      />
+      <Suspense fallback={<div>Loading reports...</div>}>
+        <ReportsDashboard
+          totalRevenue={totalRevenue}
+          totalPurchaseSpend={totalPurchaseSpend}
+          netFigure={totalRevenue - totalPurchaseSpend}
+          startOfMonth={startOfMonth.toLocaleDateString()}
+          lowStockProducts={lowStockProducts}
+          recentSales={serializedRecentSales}
+          currency="PKR"
+        />
+      </Suspense>
     </AppFrame>
   );
 }
