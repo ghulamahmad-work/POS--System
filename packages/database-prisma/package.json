@@ -17,6 +17,7 @@
     "db:generate": "npm run db:generate:pakistan && npm run db:generate:dubai",
     "db:generate:pakistan": "prisma generate --schema prisma/pakistan/schema.prisma",
     "db:generate:dubai": "prisma generate --schema prisma/dubai/schema.prisma",
+    "prepare": "npm run db:generate",
     "db:migrate:pakistan": "prisma migrate dev --schema prisma/pakistan/schema.prisma",
     "db:migrate:dubai": "prisma migrate deploy --schema prisma/dubai/schema.prisma"
   }
