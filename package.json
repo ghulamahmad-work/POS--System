@@ -5,7 +5,8 @@
     "generate": "npm run generate:pakistan && npm run generate:dubai",
     "generate:pakistan": "cd packages/database-prisma && npx prisma generate --schema prisma/pakistan/schema.prisma",
     "generate:dubai": "cd packages/database-prisma && npx prisma generate --schema prisma/dubai/schema.prisma",
-    "build": "turbo run build",
+    "prebuild": "npm run generate",
+    "build": "npm run generate && turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "prettier": "^3.7.4",
+    "prisma": "^5.22.0",
     "turbo": "^2.9.18",
     "typescript": "5.9.2"
   },

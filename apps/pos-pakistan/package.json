@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3001",
-    "postinstall": "npm exec --prefix ../../packages/database-prisma prisma generate -- --schema prisma/pakistan/schema.prisma",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
