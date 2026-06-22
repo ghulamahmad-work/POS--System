@@ -13,7 +13,7 @@ export function AppFrame({ pageTitle, headerActions, children }: AppFrameProps) 
       appName="Grocery Store"
       pageTitle={pageTitle}
       headerActions={headerActions}
-      userLabel="Dubai Counter"
+      userLabel="Dubai Grocery Store"
     >
       {children}
     </AppShell>

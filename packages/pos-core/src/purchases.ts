@@ -15,12 +15,14 @@ export function createPurchasesActions(purchasesService: any) {
       }
     ) {
       await purchasesService.createPurchaseOrder(data);
+      revalidatePath("/");
       revalidatePath("/purchases");
       revalidatePath("/reports");
     },
 
     async markAsReceived(id: string) {
       await purchasesService.markPurchaseOrderReceived(id);
+      revalidatePath("/");
       revalidatePath("/purchases");
       revalidatePath("/products");
       revalidatePath("/reports");
@@ -28,6 +30,7 @@ export function createPurchasesActions(purchasesService: any) {
 
     async deletePurchaseOrder(id: string) {
       await purchasesService.deletePurchaseOrder(id);
+      revalidatePath("/");
       revalidatePath("/purchases");
       revalidatePath("/products");
       revalidatePath("/reports");

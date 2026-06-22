@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { StatCard, SalesChart } from "./DashboardComponents";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./Table";
-import { Badge } from "./Badge";
 import { formatCurrency } from "./formatCurrency";
 
 type Product = { id: string; name: string; stock: number; category: string };
@@ -57,15 +56,15 @@ export function ReportsDashboard({
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">Business Insights</h2>
+          <h2 className="text-2xl font-bold text-(--text-primary)">Business Insights</h2>
         </div>
-        <div className="flex items-center gap-1.5 self-start sm:self-auto bg-[var(--canvas)] p-1 rounded-lg border border-[var(--border-subtle)]">
+        <div className="flex items-center gap-1.5 self-start sm:self-auto bg-(--canvas) p-1 rounded-lg border border-(--border-subtle)">
           <Link
             href={createRangeLink("week")}
             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
               currentPeriod === "week"
-                ? "bg-[var(--panel)] text-[var(--brand-600)] shadow-sm border border-[var(--border-subtle)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                ? "bg-(--panel) text-(--brand-600) shadow-sm border border-(--border-subtle)"
+                : "text-(--text-muted) hover:text-(--text-primary)"
             }`}
           >
             This Week
@@ -74,8 +73,8 @@ export function ReportsDashboard({
             href={createRangeLink("month")}
             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
               currentPeriod === "month"
-                ? "bg-[var(--panel)] text-[var(--brand-600)] shadow-sm border border-[var(--border-subtle)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                ? "bg-(--panel) text-(--brand-600) shadow-sm border border-(--border-subtle)"
+                : "text-(--text-muted) hover:text-(--text-primary)"
             }`}
           >
             This Month
@@ -84,8 +83,8 @@ export function ReportsDashboard({
             href={createRangeLink("year")}
             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
               currentPeriod === "year"
-                ? "bg-[var(--panel)] text-[var(--brand-600)] shadow-sm border border-[var(--border-subtle)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                ? "bg-(--panel) text-(--brand-600) shadow-sm border border-(--border-subtle)"
+                : "text-(--text-muted) hover:text-(--text-primary)"
             }`}
           >
             This Year
@@ -124,10 +123,10 @@ export function ReportsDashboard({
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--panel)] shadow-sm">
-          <div className="border-b border-[var(--border-subtle)] p-5">
-            <h3 className="text-base font-bold text-[var(--text-primary)]">Low Stock Alerts</h3>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
+        <div className="self-start overflow-hidden rounded-xl border border-(--border-subtle) bg-(--panel) shadow-sm">
+          <div className="border-b border-(--border-subtle) p-5">
+            <h3 className="text-base font-bold text-(--text-primary)">Low Stock Alerts</h3>
           </div>
           <Table>
             <TableHeader>
@@ -140,17 +139,19 @@ export function ReportsDashboard({
             <TableBody>
               {lowStockProducts.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-[var(--text-muted)] py-8">
+                  <TableCell colSpan={3} className="text-center text-(--text-muted) py-8">
                     All stock levels are healthy.
                   </TableCell>
                 </TableRow>
               ) : (
                 lowStockProducts.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell className="font-medium text-[var(--text-primary)]">{product.name}</TableCell>
-                    <TableCell className="text-[var(--text-muted)]">{product.category}</TableCell>
+                    <TableCell className="font-medium text-(--text-primary)">{product.name}</TableCell>
+                    <TableCell className="text-(--text-muted)">{product.category}</TableCell>
                     <TableCell className="text-right">
-                      <Badge variant="danger">{product.stock}</Badge>
+                      <span className="inline-flex items-center rounded-full border border-rose-200 bg-transparent px-2.5 py-0.5 text-xs font-semibold text-rose-700">
+                        {product.stock}
+                      </span>
                     </TableCell>
                   </TableRow>
                 ))
@@ -159,9 +160,9 @@ export function ReportsDashboard({
           </Table>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--panel)] shadow-sm">
-          <div className="border-b border-[var(--border-subtle)] p-5">
-            <h3 className="text-base font-bold text-[var(--text-primary)]">Recent Sales Activity</h3>
+        <div className="self-start overflow-hidden rounded-xl border border-(--border-subtle) bg-(--panel) shadow-sm">
+          <div className="border-b border-(--border-subtle) p-5">
+            <h3 className="text-base font-bold text-(--text-primary)">Recent Sales Activity</h3>
           </div>
           <Table>
             <TableHeader>
@@ -174,22 +175,22 @@ export function ReportsDashboard({
             <TableBody>
               {recentSales.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-[var(--text-muted)] py-8">
+                  <TableCell colSpan={3} className="text-center text-(--text-muted) py-8">
                     No sales recorded yet.
                   </TableCell>
                 </TableRow>
               ) : (
                 recentSales.map((sale) => (
                   <TableRow key={sale.id}>
-                    <TableCell className="text-[var(--text-muted)]">
+                    <TableCell className="text-(--text-muted)">
                       {new Date(sale.createdAt).toLocaleString()}
                     </TableCell>
                     <TableCell>
-                      <span className="capitalize text-[var(--text-primary)] font-medium">
+                      <span className="capitalize text-(--text-primary) font-medium">
                         {sale.paymentType}
                       </span>
                     </TableCell>
-                    <TableCell className="text-right tabular-nums font-bold text-[var(--text-primary)]">
+                    <TableCell className="text-right tabular-nums font-bold text-(--text-primary)">
                       {formatCurrency(sale.totalAmount, currency)}
                     </TableCell>
                   </TableRow>

@@ -74,7 +74,7 @@ export function PurchaseListClient({
 
   return (
     <div>
-      <div className="overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--panel)] shadow-sm">
+      <div className="overflow-hidden rounded-lg border border-(--border-subtle) bg-(--panel) shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
@@ -89,7 +89,7 @@ export function PurchaseListClient({
           <TableBody>
             {orders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-[var(--text-muted)] py-8">
+                <TableCell colSpan={6} className="text-center text-(--text-muted) py-8">
                   No purchase orders found.
                 </TableCell>
               </TableRow>
@@ -97,17 +97,24 @@ export function PurchaseListClient({
               orders.map(po => (
                 <TableRow key={po.id}>
                   <TableCell>
-                    <div className="font-medium text-[var(--text-primary)]">{po.vendor?.name}</div>
-                    <div className="text-sm text-[var(--text-muted)]">{po.vendor?.contactPhone}</div>
+                    <div className="font-medium text-(--text-primary)">{po.vendor?.name}</div>
+                    <div className="text-sm text-(--text-muted)">{po.vendor?.contactPhone}</div>
                   </TableCell>
                   <TableCell>{(po.items as unknown[])?.length ?? 0}</TableCell>
                   <TableCell className="tabular-nums">{formatCurrency(po.totalAmount, currency)}</TableCell>
                   <TableCell>
-                    <Badge variant={po.status === "received" ? "success" : "warning"}>
+                    <span
+                      className={[
+                        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold",
+                        po.status === "received"
+                          ? "border-emerald-200 bg-transparent text-emerald-700"
+                            : "border-amber-200 bg-transparent text-amber-700",
+                      ].join(" ")}
+                    >
                       {po.status.toUpperCase()}
-                    </Badge>
+                    </span>
                   </TableCell>
-                  <TableCell className="text-[var(--text-muted)]">
+                  <TableCell className="text-(--text-muted)">
                     {new Date(po.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="text-right space-x-2">
@@ -116,7 +123,7 @@ export function PurchaseListClient({
                         size="sm"
                         variant="outline"
                         onClick={() => handleMarkReceived(po.id)}
-                        className="text-[var(--brand-600)]"
+                        className="text-(--brand-600)"
                       >
                         Receive
                       </Button>

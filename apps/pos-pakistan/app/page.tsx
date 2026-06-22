@@ -3,7 +3,7 @@ import { StatCard, SalesChart, TopProductsList, EmptyState } from "@repo/ui/Dash
 import { formatCurrency } from "@repo/ui/formatCurrency";
 import { AppFrame } from "./AppFrame";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type PageProps = {
   searchParams: Promise<{ period?: string }>;
@@ -52,8 +52,45 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const period = params.period === "month" ? "month" : "week";
   const days = period === "month" ? 30 : 7;
 
-  // Check if store has any sales at all
-  const totalSalesCount = await pakistanDb.sale.count();
+  const now = new Date();
+  const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const prevStartDate = new Date(now.getTime() - 2 * days * 24 * 60 * 60 * 1000);
+
+  const [totalSalesCount, currentSales, previousSales, lowStockCount] = await Promise.all([
+    pakistanDb.sale.count(),
+    pakistanDb.sale.findMany({
+      where: {
+        createdAt: { gte: startDate },
+      },
+      select: {
+        totalAmount: true,
+        createdAt: true,
+        items: {
+          select: {
+            productId: true,
+            quantity: true,
+          },
+        },
+      },
+    }),
+    pakistanDb.sale.findMany({
+      where: {
+        createdAt: {
+          gte: prevStartDate,
+          lt: startDate,
+        },
+      },
+      select: {
+        totalAmount: true,
+      },
+    }),
+    pakistanDb.product.count({
+      where: {
+        stock: { lt: 10 },
+      },
+    }),
+  ]);
+
   if (totalSalesCount === 0) {
     return (
       <AppFrame pageTitle="Dashboard">
@@ -66,37 +103,6 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       </AppFrame>
     );
   }
-
-  const now = new Date();
-  const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-  const prevStartDate = new Date(now.getTime() - 2 * days * 24 * 60 * 60 * 1000);
-
-  // 1. Fetch current sales in scope
-  const currentSales = await pakistanDb.sale.findMany({
-    where: {
-      createdAt: { gte: startDate },
-    },
-    include: {
-      items: true,
-    },
-  });
-
-  // 2. Fetch previous sales in scope
-  const previousSales = await pakistanDb.sale.findMany({
-    where: {
-      createdAt: {
-        gte: prevStartDate,
-        lt: startDate,
-      },
-    },
-  });
-
-  // 3. Low stock count
-  const lowStockCount = await pakistanDb.product.count({
-    where: {
-      stock: { lt: 10 },
-    },
-  });
 
   // Calculate statistics
   const currentRevenue = currentSales.reduce((sum, s) => sum + s.totalAmount, 0);
@@ -118,9 +124,17 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   // Top Category sold in current period
   const productIds = Array.from(new Set(currentSales.flatMap((s) => s.items.map((i) => i.productId))));
-  const products = await pakistanDb.product.findMany({
-    where: { id: { in: productIds } },
-  });
+  const products = productIds.length
+    ? await pakistanDb.product.findMany({
+        where: { id: { in: productIds } },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+          price: true,
+        },
+      })
+    : [];
   const productMap = new Map(products.map((p) => [p.id, p]));
 
   const categoryQty: Record<string, number> = {};
@@ -155,9 +169,17 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .slice(0, 5);
 
   const topProductIds = topProductsSorted.map(([id]) => id);
-  const topProductsDetails = await pakistanDb.product.findMany({
-    where: { id: { in: topProductIds } },
-  });
+  const topProductsDetails = topProductIds.length
+    ? await pakistanDb.product.findMany({
+        where: { id: { in: topProductIds } },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+          price: true,
+        },
+      })
+    : [];
   const topProductsMap = new Map(topProductsDetails.map((p) => [p.id, p]));
 
   const topItems = topProductsSorted.map(([id, qty]) => {

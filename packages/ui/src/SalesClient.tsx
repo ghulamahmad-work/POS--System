@@ -169,12 +169,12 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
                     </p>
                   </div>
                   <span className={[
-                    "rounded-full px-2.5 py-1 text-[10px] font-semibold tabular-nums",
+                    "rounded-full border px-2.5 py-1 text-[10px] font-semibold tabular-nums",
                     outOfStock
-                      ? "bg-red-50 text-red-600"
-                      : p.stock <= 5
-                      ? "bg-amber-50 text-amber-700"
-                      : "bg-emerald-50 text-emerald-700",
+                      ? "border-red-200 text-red-600"
+                      : p.stock <= 20
+                      ? "border-amber-200 text-amber-700"
+                      : "border-emerald-200 text-emerald-700",
                   ].join(" ")}>
                     {outOfStock ? "Out of stock" : `${p.stock} left`}
                   </span>

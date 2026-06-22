@@ -14,6 +14,7 @@ export function createSalesActions(salesService: any) {
     }) {
       await salesService.createSale(cartData);
 
+      revalidatePath("/");
       revalidatePath("/products");
       revalidatePath("/sales");
       revalidatePath("/reports");
