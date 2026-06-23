@@ -64,8 +64,9 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   return (
     <AppFrame pageTitle="Products" headerActions={headerActions}>
       <div className="overflow-hidden rounded-lg border border-(--border-subtle) bg-(--panel) shadow-sm">
-        <div className="overflow-x-auto">
-          <Table className="min-w-190">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
@@ -74,7 +75,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 <TableHead>Category</TableHead>
                 <TableHead>SKU</TableHead>
                 <TableHead>Unit Size</TableHead>
-                <TableHead>Expiration Date</TableHead>
+                <TableHead>Expiration</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -106,13 +107,63 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-12 text-center text-sm text-(--text-muted)">
+                  <TableCell colSpan={8} className="py-12 text-center text-sm text-(--text-muted)">
                     {query ? `No products match "${params.q}".` : "No products available."}
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-(--border-subtle)">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product: Product) => (
+              <div key={product.id} className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-(--text-primary) truncate">{product.name}</p>
+                    <p className="text-xs text-(--text-muted) mt-0.5">{product.category}</p>
+                  </div>
+                  <ProductActions productId={product.id} deleteAction={deleteProduct} />
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-(--text-muted)">Price:</span>
+                    <p className="font-semibold tabular-nums text-(--text-primary)">{formatCurrency(product.price, "AED")}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">Stock:</span>
+                    <p className="font-semibold tabular-nums text-(--text-primary)">{product.stock}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">SKU:</span>
+                    <p className="text-(--text-primary)">{product.sku ?? "—"}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">Unit Size:</span>
+                    <p className="text-(--text-primary)">
+                      {product.unitOfMeasure && product.unitQuantity
+                        ? `${product.unitQuantity} ${product.unitOfMeasure}`
+                        : product.weightGrams
+                          ? `${product.weightGrams} g`
+                          : "—"}
+                    </p>
+                  </div>
+                </div>
+                {product.expiryDate && (
+                  <div className="text-xs text-(--text-muted)">
+                    Expires: {new Date(product.expiryDate).toLocaleDateString("en-US")}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="py-12 text-center text-sm text-(--text-muted)">
+              {query ? `No products match "${params.q}".` : "No products available."}
+            </div>
+          )}
         </div>
       </div>
     </AppFrame>

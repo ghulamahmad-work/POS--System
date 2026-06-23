@@ -111,13 +111,12 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-9rem)] overflow-hidden rounded-xl border border-(--border-subtle) bg-(--canvas) shadow-sm">
+    <div className="flex min-h-[calc(100vh-9rem)] flex-col overflow-hidden rounded-xl border border-(--border-subtle) bg-(--canvas) shadow-sm lg:flex-row">
 
       {/* ── Left: Product Grid ── */}
-      <div className="flex w-2/3 flex-col border-r border-(--border-subtle) p-5">
-
+      <div className="flex flex-1 flex-col p-4 lg:p-5 lg:border-r lg:border-(--border-subtle)">
         {/* Search */}
-        <div className="relative mb-5">
+        <div className="relative mb-4 lg:mb-5">
           <svg className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-(--text-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
@@ -131,7 +130,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
         </div>
 
         {/* Grid */}
-        <div className="grid flex-1 auto-rows-max items-start grid-cols-2 gap-3 overflow-y-auto pb-2 lg:grid-cols-3">
+        <div className="grid auto-rows-max items-start grid-cols-1 gap-3 overflow-y-auto pb-2 sm:grid-cols-2 lg:flex-1">
           {filteredProducts.map(p => {
             const outOfStock = p.stock === 0;
             const inCart = cart.find(c => c.id === p.id);
@@ -200,10 +199,10 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
       </div>
 
       {/* ── Right: Cart ── */}
-      <div className="flex w-1/3 flex-col bg-(--panel)">
+      <div className="flex flex-col bg-(--panel) lg:w-1/3 lg:max-w-md">
 
         {/* Cart header */}
-        <div className="flex items-center justify-between border-b border-(--border-subtle) px-5 py-4">
+        <div className="flex items-center justify-between border-b border-(--border-subtle) px-4 py-4 lg:px-5">
           <h2 className="text-lg font-bold text-(--text-primary)">Current Cart</h2>
           {cart.length > 0 && (
             <span className="rounded-full bg-(--brand-500) px-2.5 py-0.5 text-xs font-bold text-white tabular-nums">
@@ -213,7 +212,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
         </div>
 
         {/* Cart items */}
-        <div className="flex-1 overflow-y-auto px-5 py-4">
+        <div className="flex-1 overflow-y-auto px-4 py-4 lg:px-5">
           {cart.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center gap-2 text-(--text-muted)">
               <svg className="size-14 opacity-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -269,7 +268,7 @@ export function SalesClient({ initialProducts, taxRate, taxLabel, currency, chec
         </div>
 
         {/* Totals & checkout */}
-        <div className="shrink-0 border-t border-[var(--border-subtle)] px-5 pt-4 pb-5 space-y-3">
+        <div className="shrink-0 border-t border-[var(--border-subtle)] px-4 pt-4 pb-5 space-y-3 lg:px-5">
           <div className="flex justify-between text-sm text-[var(--text-muted)]">
             <span>Subtotal</span>
             <span className="tabular-nums font-medium text-[var(--text-primary)]">{formatCurrency(subtotal, currency)}</span>

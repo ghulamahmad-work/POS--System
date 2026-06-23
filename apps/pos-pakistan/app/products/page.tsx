@@ -62,8 +62,9 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   return (
     <AppFrame pageTitle="Products" headerActions={headerActions}>
       <div className="overflow-hidden rounded-lg border border-(--border-subtle) bg-(--panel) shadow-sm">
-        <div className="overflow-x-auto">
-          <Table className="min-w-190">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
+          <Table className="min-w-[900px]">
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
@@ -100,13 +101,80 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-12 text-center text-sm text-(--text-muted)">
+                  <TableCell colSpan={11} className="py-12 text-center text-sm text-(--text-muted)">
                     {query ? `No products match "${params.q}".` : "No products available."}
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-(--border-subtle)">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product: Product) => (
+              <div key={product.id} className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-(--text-primary) truncate">{product.name}</p>
+                    <p className="text-xs text-(--text-muted) mt-0.5">{product.category}</p>
+                  </div>
+                  <ProductActions productId={product.id} deleteAction={deleteProduct} />
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-(--text-muted)">Price:</span>
+                    <p className="font-semibold tabular-nums text-(--text-primary)">{formatCurrency(product.price, "PKR")}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">Stock:</span>
+                    <p className="font-semibold tabular-nums text-(--text-primary)">{product.stock}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">SKU:</span>
+                    <p className="text-(--text-primary)">{product.sku ?? "—"}</p>
+                  </div>
+                  <div>
+                    <span className="text-(--text-muted)">Brand:</span>
+                    <p className="text-(--text-primary)">{product.brand ?? "—"}</p>
+                  </div>
+                </div>
+                {(product.modelNumber || product.serialNumber || product.voltage || product.warrantyMonths) && (
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {product.modelNumber && (
+                      <div>
+                        <span className="text-(--text-muted)">Model:</span>
+                        <p className="text-(--text-primary)">{product.modelNumber}</p>
+                      </div>
+                    )}
+                    {product.serialNumber && (
+                      <div>
+                        <span className="text-(--text-muted)">Serial:</span>
+                        <p className="text-(--text-primary)">{product.serialNumber}</p>
+                      </div>
+                    )}
+                    {product.voltage && (
+                      <div>
+                        <span className="text-(--text-muted)">Voltage:</span>
+                        <p className="text-(--text-primary)">{product.voltage}</p>
+                      </div>
+                    )}
+                    {product.warrantyMonths && (
+                      <div>
+                        <span className="text-(--text-muted)">Warranty:</span>
+                        <p className="text-(--text-primary)">{product.warrantyMonths} months</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="py-12 text-center text-sm text-(--text-muted)">
+              {query ? `No products match "${params.q}".` : "No products available."}
+            </div>
+          )}
         </div>
       </div>
     </AppFrame>
