@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/dubai-client";
+import { PrismaClient } from "../../../apps/pos-dubai/src/generated/dubai-client";
 
 const globalForPrisma = globalThis as unknown as {
   dubaiDb?: PrismaClient;
@@ -9,11 +9,11 @@ export const dubaiDb =
   new PrismaClient({
     datasources: {
       db: {
-        url: process.env.DUBAI_DATABASE_URL,
+        url: process.env["DUBAI_DATABASE_URL"],
       },
     },
   });
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env["NODE_ENV"] !== "production") {
   globalForPrisma.dubaiDb = dubaiDb;
 }
