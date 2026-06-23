@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { StatCard, SalesChart } from "./DashboardComponents";
+import { StatCard } from "./DashboardComponents";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./Table";
 import { formatCurrency } from "./formatCurrency";
 
@@ -28,7 +28,6 @@ export function ReportsDashboard({
   totalRevenue,
   totalPurchaseSpend,
   netFigure,
-  startOfMonth,
   lowStockProducts,
   recentSales,
   currency,
@@ -42,15 +41,6 @@ export function ReportsDashboard({
     params.set("range", range);
     return `${pathname}?${params.toString()}`;
   };
-
-  // We reuse the SalesChart from Dashboard, but since we don't have historical data arrays 
-  // passed into ReportsDashboard currently, we'll fake a simple chart for demonstration 
-  // to satisfy the "primary trend chart" requirement using the totalRevenue.
-  // In a real app, the server would pass a `chartData` array here.
-  const mockChartData = Array.from({ length: 7 }).map((_, i) => ({
-    label: `Day ${i + 1}`,
-    value: Math.max(0, (totalRevenue / 7) * (0.8 + Math.random() * 0.4)),
-  }));
 
   return (
     <div className="space-y-8">

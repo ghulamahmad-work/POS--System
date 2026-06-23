@@ -56,7 +56,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
   const prevStartDate = new Date(now.getTime() - 2 * days * 24 * 60 * 60 * 1000);
 
-  const [totalSalesCount, currentSales, previousSales, lowStockCount] = await Promise.all([
+  const [totalSalesCount, currentSales, previousSalesSummary, lowStockCount] = await Promise.all([
     dubaiDb.sale.count(),
     dubaiDb.sale.findMany({
       where: {
@@ -73,14 +73,17 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         },
       },
     }),
-    dubaiDb.sale.findMany({
+    dubaiDb.sale.aggregate({
       where: {
         createdAt: {
           gte: prevStartDate,
           lt: startDate,
         },
       },
-      select: {
+      _count: {
+        _all: true,
+      },
+      _sum: {
         totalAmount: true,
       },
     }),
@@ -106,9 +109,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   // Calculate statistics
   const currentRevenue = currentSales.reduce((sum, s) => sum + s.totalAmount, 0);
-  const previousRevenue = previousSales.reduce((sum, s) => sum + s.totalAmount, 0);
+  const previousRevenue = previousSalesSummary._sum.totalAmount ?? 0;
   const currentOrders = currentSales.length;
-  const previousOrders = previousSales.length;
+  const previousOrders = previousSalesSummary._count._all;
 
   const getDelta = (curr: number, prev: number) => {
     if (prev === 0) return undefined;
@@ -169,18 +172,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .slice(0, 5);
 
   const topProductIds = topProductsSorted.map(([id]) => id);
-  const topProductsDetails = topProductIds.length
-    ? await dubaiDb.product.findMany({
-        where: { id: { in: topProductIds } },
-        select: {
-          id: true,
-          name: true,
-          category: true,
-          price: true,
-        },
-      })
-    : [];
-  const topProductsMap = new Map(topProductsDetails.map((p) => [p.id, p]));
+  const topProductsMap = new Map(products.filter((p) => topProductIds.includes(p.id)).map((p) => [p.id, p]));
 
   const topItems = topProductsSorted.map(([id, qty]) => {
     const prod = topProductsMap.get(id);

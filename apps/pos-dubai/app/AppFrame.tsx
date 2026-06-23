@@ -10,10 +10,10 @@ type AppFrameProps = {
 export function AppFrame({ pageTitle, headerActions, children }: AppFrameProps) {
   return (
     <AppShell
-      appName="Grocery Store"
+      appName="Dubai Grocery Store"
       pageTitle={pageTitle}
       headerActions={headerActions}
-      userLabel="Dubai Grocery Store"
+      userLabel="Dubai Counter"
     >
       {children}
     </AppShell>

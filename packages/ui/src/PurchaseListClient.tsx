@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./Table";
-import { Badge } from "./Badge";
 import { useToast } from "./Toast";
 import { Button } from "./Button";
 import { ConfirmDialog } from "./ConfirmDialog";

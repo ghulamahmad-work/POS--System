@@ -230,8 +230,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "packages/database-prisma/src/generated/dubai-client",
-    "database-prisma/src/generated/dubai-client",
+    "src/generated/dubai-client",
+    "generated/dubai-client",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -260,11 +260,11 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "packages/database-prisma/src/generated/dubai-client/query_engine-windows.dll.node")
+path.join(process.cwd(), "src/generated/dubai-client/query_engine-windows.dll.node")
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
-path.join(process.cwd(), "packages/database-prisma/src/generated/dubai-client/libquery_engine-rhel-openssl-3.0.x.so.node")
+path.join(process.cwd(), "src/generated/dubai-client/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "packages/database-prisma/src/generated/dubai-client/schema.prisma")
+path.join(process.cwd(), "src/generated/dubai-client/schema.prisma")

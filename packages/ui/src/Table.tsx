@@ -1,5 +1,7 @@
 import * as React from "react";
 
+/* eslint-disable react/prop-types */
+
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>

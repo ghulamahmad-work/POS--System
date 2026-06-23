@@ -35,6 +35,9 @@ export function StatCard({ label, value, icon, delta, highlighted = false }: Sta
       )}
 
       <div className="flex items-center gap-3">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/70 text-[var(--brand-600)] ring-1 ring-[var(--brand-500)]/15">
+          {icon}
+        </div>
         <p className={cx("text-sm font-semibold uppercase tracking-wider", highlighted ? "text-[var(--brand-600)]" : "text-[var(--text-muted)]")}>
           {label}
         </p>
@@ -170,7 +173,7 @@ export function SalesChart({ data, currency }: SalesChartProps) {
         <div>
           {/* Chart visual container */}
           <div className="grid grid-flow-col auto-cols-fr gap-1 sm:gap-2.5 h-64 items-end border-b border-[var(--border-subtle)] pb-2 px-1">
-            {data.map((item, index) => {
+            {data.map((item) => {
               const heightPercent = (item.value / maxVal) * 100;
               return (
                 <div key={item.label} className="group relative flex flex-col justify-end h-full w-full">

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "./Toast";
-import { Button } from "./Button";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 type Props = {

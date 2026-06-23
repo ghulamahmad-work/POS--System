@@ -1,6 +1,7 @@
 import { getProductById } from "../../../../actions/product";
 import { notFound } from "next/navigation";
 import { EditForm } from "./EditForm";
+import { AppFrame } from "../../../AppFrame";
 
 export default async function EditProductPage({
   params,
@@ -14,9 +15,10 @@ export default async function EditProductPage({
   if (!product) return notFound();
 
   return (
-    <div className="p-6 max-w-md mx-auto mt-8 bg-[var(--panel)] border border-[var(--border-subtle)] rounded-xl shadow-sm">
-      <h1 className="text-xl font-bold mb-6 text-[var(--text-primary)]">Edit Product</h1>
-      <EditForm product={product as any} />
-    </div>
+    <AppFrame pageTitle="Edit Product">
+      <div className="max-w-lg rounded-xl border border-[var(--border-subtle)] bg-[var(--panel)] p-6 shadow-sm">
+        <EditForm product={product} />
+      </div>
+    </AppFrame>
   );
 }

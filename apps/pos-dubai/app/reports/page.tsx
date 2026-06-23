@@ -9,21 +9,21 @@ export default async function ReportsPage() {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [sales, purchases, lowStockProducts, recentSales] = await Promise.all([
-    dubaiDb.sale.findMany({
+  const [salesSummary, purchasesSummary, lowStockProducts, recentSales] = await Promise.all([
+    dubaiDb.sale.aggregate({
       where: {
         createdAt: { gte: startOfMonth },
       },
-      select: {
+      _sum: {
         totalAmount: true,
       },
     }),
-    dubaiDb.purchaseOrder.findMany({
+    dubaiDb.purchaseOrder.aggregate({
       where: {
         createdAt: { gte: startOfMonth },
         status: "received",
       },
-      select: {
+      _sum: {
         totalAmount: true,
       },
     }),
@@ -34,6 +34,7 @@ export default async function ReportsPage() {
       orderBy: {
         stock: "asc",
       },
+      take: 10,
       select: {
         id: true,
         name: true,
@@ -55,8 +56,8 @@ export default async function ReportsPage() {
     }),
   ]);
 
-  const totalRevenue = sales.reduce((sum, sale) => sum + sale.totalAmount, 0);
-  const totalPurchaseSpend = purchases.reduce((sum, purchase) => sum + purchase.totalAmount, 0);
+  const totalRevenue = salesSummary._sum.totalAmount ?? 0;
+  const totalPurchaseSpend = purchasesSummary._sum.totalAmount ?? 0;
 
   // Convert Date objects to ISO strings for serialization
   const serializedRecentSales = recentSales.map(sale => ({
