@@ -173,7 +173,7 @@ export function ReportsDashboard({
                 recentSales.map((sale) => (
                   <TableRow key={sale.id}>
                     <TableCell className="text-(--text-muted)">
-                      {new Date(sale.createdAt).toLocaleString()}
+                      {new Date(sale.createdAt).toLocaleString("en-US")}
                     </TableCell>
                     <TableCell>
                       <span className="capitalize text-(--text-primary) font-medium">

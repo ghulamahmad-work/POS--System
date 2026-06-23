@@ -189,12 +189,12 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const salesByDay: Record<string, number> = {};
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-    const label = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    const label = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
     salesByDay[label] = 0;
   }
 
   for (const sale of currentSales) {
-    const label = new Date(sale.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    const label = new Date(sale.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 if (label in salesByDay) {
   salesByDay[label] = (salesByDay[label] ?? 0) + sale.totalAmount;
 }
