@@ -97,8 +97,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         <EmptyState
           title="No sales recorded yet"
           description="Get started by recording your very first customer sale."
-          actionLabel="Record a Sale"
-          actionHref="/sales"
+          actionLabel="Go to Checkout"
+          actionHref="/checkout"
         />
       </AppFrame>
     );

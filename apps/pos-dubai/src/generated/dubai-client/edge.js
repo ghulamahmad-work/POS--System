@@ -201,7 +201,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../../../packages/database-prisma/prisma/dubai",
   "clientVersion": "5.22.0",

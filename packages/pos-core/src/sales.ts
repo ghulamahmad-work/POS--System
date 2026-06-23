@@ -16,7 +16,7 @@ export function createSalesActions(salesService: any) {
 
       revalidatePath("/");
       revalidatePath("/products");
-      revalidatePath("/sales");
+      revalidatePath("/checkout");
       revalidatePath("/reports");
     },
   };

@@ -20,7 +20,7 @@ type IconProps = {
 const navItems = [
   { label: "Dashboard", href: "/", icon: DashboardIcon },
   { label: "Products", href: "/products", icon: ProductsIcon },
-  { label: "Sales", href: "/sales", icon: SalesIcon },
+  { label: "Checkout", href: "/checkout", icon: SalesIcon },
   { label: "Purchases", href: "/purchases", icon: PurchasesIcon },
   { label: "Reports", href: "/reports", icon: ReportsIcon },
 ];
