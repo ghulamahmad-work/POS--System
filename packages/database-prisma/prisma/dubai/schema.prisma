@@ -1,9 +1,8 @@
 generator client {
   provider      = "prisma-client-js"
-  output        = "../../../apps/pos-dubai/src/generated/dubai-client"
+  output        = "../../../../apps/pos-dubai/src/generated/dubai-client"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
-
 datasource db {
   provider  = "postgresql"
   url       = env("DUBAI_DATABASE_URL")

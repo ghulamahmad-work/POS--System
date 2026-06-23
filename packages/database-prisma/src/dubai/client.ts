@@ -1,5 +1,4 @@
-import { PrismaClient } from "../../../apps/pos-dubai/src/generated/dubai-client";
-
+import { PrismaClient } from "../../../../apps/pos-dubai/src/generated/dubai-client";
 const globalForPrisma = globalThis as unknown as {
   dubaiDb?: PrismaClient;
 };
