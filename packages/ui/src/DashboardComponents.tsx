@@ -35,9 +35,6 @@ export function StatCard({ label, value, icon, delta, highlighted = false }: Sta
       )}
 
       <div className="flex items-center gap-3">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/70 text-[var(--brand-600)] ring-1 ring-[var(--brand-500)]/15">
-          {icon}
-        </div>
         <p className={cx("text-sm font-semibold uppercase tracking-wider", highlighted ? "text-[var(--brand-600)]" : "text-[var(--text-muted)]")}>
           {label}
         </p>
